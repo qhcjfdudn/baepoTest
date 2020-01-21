@@ -6,10 +6,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_native_1 = require("react-native");
-var App = function () {
+var axios_1 = __importDefault(require("axios"));
+function getHello() {
+    axios_1.default.get('http://70.12.247.106:8001/hello')
+        .then(function (response) {
+        console.log(response);
+    })
+        .catch(function (error) {
+        console.log(error);
+    });
+}
+exports.App = function () {
     var _a = react_1.useState(0), count = _a[0], setCount = _a[1];
     return (react_1.default.createElement(react_native_1.View, { style: styles.sectionContainer },
         react_1.default.createElement(react_native_1.Text, { style: styles.sectionTitle }, "Step One"),
@@ -18,9 +31,9 @@ var App = function () {
             react_1.default.createElement(react_native_1.Text, { style: styles.highlight }, "App.tsx"),
             " to change this screen and then come back to see your edits."),
         react_1.default.createElement(react_native_1.Text, { style: styles.sectionDescription }, count),
-        react_1.default.createElement(react_native_1.Button, { title: "increment", onPress: function () { return setCount(count + 1); } })));
+        react_1.default.createElement(react_native_1.Button, { title: "increment", onPress: function () { return setCount(count + 1); } }),
+        react_1.default.createElement(react_native_1.Button, { onPress: getHello, title: "getHello" })));
 };
-exports.default = App;
 var styles = react_native_1.StyleSheet.create({
     sectionContainer: {
         marginTop: 32,
