@@ -5,8 +5,19 @@ import {
   Text,
   Button,
 } from 'react-native';
+import axios from 'axios';
 
-const App = () => {
+function getHello() {
+  axios.get('http://70.12.247.106:8001/hello')
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+export const App = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -18,11 +29,10 @@ const App = () => {
               </Text>
       <Text style={styles.sectionDescription}>{count}</Text>
       <Button title="increment" onPress={() => setCount(count + 1)}/>
+      <Button onPress={getHello} title="getHello"/>
     </View>
   )
 }
-
-export default App;
 
 const styles = StyleSheet.create({
   sectionContainer: {
