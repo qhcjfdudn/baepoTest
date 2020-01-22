@@ -14,6 +14,7 @@ var react_1 = __importStar(require("react"));
 var react_native_1 = require("react-native");
 var axios_1 = __importDefault(require("axios"));
 var loginForm_1 = __importDefault(require("./components/auth/loginForm"));
+var Router_1 = require("./Router");
 function getHello() {
     axios_1.default.get('http://70.12.247.106:8001/hello')
         .then(function (response) {
@@ -34,7 +35,8 @@ exports.App = function () {
         react_1.default.createElement(react_native_1.Text, { style: styles.sectionDescription }, count),
         react_1.default.createElement(react_native_1.Button, { title: "increment", onPress: function () { return setCount(count + 1); } }),
         react_1.default.createElement(react_native_1.Button, { onPress: getHello, title: "getHello" }),
-        react_1.default.createElement(loginForm_1.default, null)));
+        react_1.default.createElement(loginForm_1.default, null),
+        react_1.default.createElement(Router_1.Router, null)));
 };
 var styles = react_native_1.StyleSheet.create({
     sectionContainer: {

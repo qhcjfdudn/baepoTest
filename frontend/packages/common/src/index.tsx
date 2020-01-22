@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import LoginFormTest from './components/auth/loginForm';
+import { Router } from './Router';
 
 function getHello() {
   axios.get('http://70.12.247.106:8001/hello')
@@ -31,9 +32,8 @@ export const App = () => {
       <Text style={styles.sectionDescription}>{count}</Text>
       <Button title="increment" onPress={() => setCount(count + 1)}/>
       <Button onPress={getHello} title="getHello"/>
-
       <LoginFormTest></LoginFormTest>
-
+      <Router />
     </View>
   )
 }
