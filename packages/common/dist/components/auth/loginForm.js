@@ -56,6 +56,7 @@ var Inputs = /** @class */ (function (_super) {
                 console.log(response);
                 _this.setState({ loginResult: response });
                 console.log('loginResult : ' + _this.state.loginResult);
+                // session 로컬 스토리지에 저장하기
                 localStorage.setItem("userInfo", response.data);
             })
                 .catch(function (error) {
