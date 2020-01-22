@@ -6,7 +6,8 @@ import {
   Button,
 } from 'react-native';
 import axios from 'axios';
-import LoginFormTest from './components/auth/loginForm';
+import LoginForm from './components/auth/LoginForm';
+import SignUpForm from './components/auth/SignUpForm';
 import { Router } from './Router';
 
 function getHello() {
@@ -32,7 +33,10 @@ export const App = () => {
       <Text style={styles.sectionDescription}>{count}</Text>
       <Button title="increment" onPress={() => setCount(count + 1)}/>
       <Button onPress={getHello} title="getHello"/>
-      <LoginFormTest></LoginFormTest>
+      
+      <LoginForm></LoginForm>
+      
+      <SignUpForm></SignUpForm>
       <Router />
     </View>
   )
