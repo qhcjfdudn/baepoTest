@@ -10,13 +10,18 @@ import axios from 'axios';
  
 const proxy = "http://70.12.246.0:8001"
 
-class LoginForm extends Component {
+class SignUpForm extends Component{
   state = {
+    name: "",
     email: "",
     password: "",
     responseData: "",
     responseStatus: Number
   };
+
+  handleName = (text: string) => {
+      this.setState({name: text});
+  }
  
   handleEmail = (text: string) => {
     this.setState({ email: text });
@@ -26,13 +31,14 @@ class LoginForm extends Component {
     this.setState({ password: text });
   };
  
-  handleLogin = (email: string, pass: string) => {
-    console.log("email :" + email + "password :" + pass);
+  handleSignUp = (name: string, email: string, pass: string) => {
+    console.log("name :" + name + ", email :" + email + ", password :" + pass);
     // axios를 통해 서버에 데이터 보내기.
     axios({
-        url: proxy + '/users/login/',
+        url: proxy + '/users/sign_up/',
         method: 'post',
         data: {
+            userName: name,
             userEmail: email,
             userPassword: pass
         }
@@ -43,12 +49,6 @@ class LoginForm extends Component {
         this.setState({responseStatus: response.status});
         console.log('responseStatus : ' + this.state.responseStatus);
         console.log('responseData : ' + this.state.responseData);
-
-        // session 로컬 스토리지에 저장하기
-        localStorage.setItem(
-            "userInfo",
-            this.state.responseData
-        )
     })
     .catch(function (error) {
         console.log(error);
@@ -58,6 +58,14 @@ class LoginForm extends Component {
   render() {
     return (
       <View style={styles.container}>
+          <TextInput
+          style={styles.input}
+          underlineColorAndroid="transparent"
+          placeholder="Name"
+          placeholderTextColor="#9a73ef"
+          autoCapitalize="none"
+          onChangeText={this.handleName}
+        />
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
@@ -76,7 +84,7 @@ class LoginForm extends Component {
         />
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.handleLogin(this.state.email, this.state.password)}
+          onPress={() => this.handleSignUp(this.state.name, this.state.email, this.state.password)}
         >
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
@@ -85,7 +93,7 @@ class LoginForm extends Component {
   }
 }
  
-export default LoginForm;
+export default SignUpForm;
  
 const styles = StyleSheet.create({
   container: {
