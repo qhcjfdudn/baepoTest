@@ -1,21 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, Button } from "react-native"
-import { TestPage } from './modules/testpage';
-import { SecondTestPage } from './modules/secondtestpage';
+import { currentPage, mainStoreContext } from './store/MainStore';
+import { RouteMain } from './modules/RouteMain';
+import { RouteLogin } from './modules/RouteLogin';
+import { RouteMap } from './modules/RouteMap';
+import { observer } from 'mobx-react-lite';
 
-export const Router: React.FC = () => {
-  const [page, setPage] = useState(0);
+export const Router: React.FC = observer(() => {
+  const mainStore = useContext(mainStoreContext);
 
-  const rendering = page === 0 ? (
-    <TestPage page={page} setPage={setPage} />
-  ) : (
-      <SecondTestPage page={page} setPage={setPage} />
-    )
+  const currentPage = mainStore.currentPage
+
+  console.log(mainStore.currentPage)
+  
+  function routePage (currentPage: currentPage) {
+    if (currentPage === 'mainPage') {
+      return (
+        <RouteMain />
+      )
+    } else if (currentPage === 'loginPage') {
+      return (
+        <RouteLogin />
+      )
+    } else if (currentPage === 'mapPage') {
+      return (
+        <RouteMap />
+      )
+    } else {
+      return (
+        <View><Text>wrong value</Text></View>
+      )
+    }
+  }
 
   return (
     <View>
-      <Text>{page}</Text>
-      {rendering}
+      {routePage(currentPage)}
     </View>
   )
-}
+})

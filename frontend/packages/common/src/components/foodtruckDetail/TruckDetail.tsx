@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
     Button,
     View,
@@ -7,10 +7,6 @@ import {
  } from "react-native";
  import MenuList from './MenuList';
 import Line from '../Line'
-
- interface IProps {
-  title:string
-}
 
 const res= {
   truck: {
@@ -44,10 +40,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default (props:IProps) => {
-  const [visible, setvisible] = useState(true);
-
-  const TruckDetail = ()=> {
+export default () => {
     return (
       <View style={styles.container}>
         
@@ -68,14 +61,4 @@ export default (props:IProps) => {
       <Line></Line>
       </View>
     )
-  }
-
-  return (
-    <View>
-      <Button onPress={()=>{setvisible(!visible);}} title="getHello"/>
-      <TruckDetail></TruckDetail>
-    </View>
-  );
-
-  
-};
+}
