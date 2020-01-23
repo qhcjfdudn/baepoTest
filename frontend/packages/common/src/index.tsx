@@ -7,6 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import axios from 'axios';
+import SignUpForm from './components/auth/SignUpForm';
 import { Router } from './Router';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from './store/MainStore';
@@ -23,6 +25,7 @@ export const App: React.FC = observer(() => {
       <ScrollView style={{height: mainStore.scrollviewHeight, paddingBottom: 30}}>
         <View style={styles.sectionContainer}>
           <Router />
+          <SignUpForm></SignUpForm>
         </View>
       </ScrollView>
       <View style={[styles.footer]}>
@@ -30,7 +33,6 @@ export const App: React.FC = observer(() => {
         <TouchableOpacity onPress={()=>mainStore.currentPage="loginPage"} style={{alignItems: "baseline", flex: 1, flexDirection: "row"}}><Text style={{color:'#FFFFFF'}}>Login</Text></TouchableOpacity>
         <TouchableOpacity onPress={()=>mainStore.currentPage="mapPage"} style={{alignItems: "baseline", flex: 1, flexDirection: "row"}}><Text style={{color:'#FFFFFF'}}>Map</Text></TouchableOpacity>
       </View>
-
     </View>
   )
 })
