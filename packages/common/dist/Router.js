@@ -9,12 +9,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_native_1 = require("react-native");
-var testpage_1 = require("./modules/testpage");
-var secondtestpage_1 = require("./modules/secondtestpage");
-exports.Router = function () {
-    var _a = react_1.useState(0), page = _a[0], setPage = _a[1];
-    var rendering = page === 0 ? (react_1.default.createElement(testpage_1.TestPage, { page: page, setPage: setPage })) : (react_1.default.createElement(secondtestpage_1.SecondTestPage, { page: page, setPage: setPage }));
-    return (react_1.default.createElement(react_native_1.View, null,
-        react_1.default.createElement(react_native_1.Text, null, page),
-        rendering));
-};
+var MainStore_1 = require("./store/MainStore");
+var RouteMain_1 = require("./modules/RouteMain");
+var RouteLogin_1 = require("./modules/RouteLogin");
+var RouteMap_1 = require("./modules/RouteMap");
+var mobx_react_lite_1 = require("mobx-react-lite");
+exports.Router = mobx_react_lite_1.observer(function () {
+    var mainStore = react_1.useContext(MainStore_1.mainStoreContext);
+    var currentPage = mainStore.currentPage;
+    console.log(mainStore.currentPage);
+    function routePage(currentPage) {
+        if (currentPage === 'mainPage') {
+            return (react_1.default.createElement(RouteMain_1.RouteMain, null));
+        }
+        else if (currentPage === 'loginPage') {
+            return (react_1.default.createElement(RouteLogin_1.RouteLogin, null));
+        }
+        else if (currentPage === 'mapPage') {
+            return (react_1.default.createElement(RouteMap_1.RouteMap, null));
+        }
+        else {
+            return (react_1.default.createElement(react_native_1.View, null,
+                react_1.default.createElement(react_native_1.Text, null, "wrong value")));
+        }
+    }
+    return (react_1.default.createElement(react_native_1.View, null, routePage(currentPage)));
+});

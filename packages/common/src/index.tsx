@@ -1,47 +1,43 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  Button,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
-import axios from 'axios';
-import LoginFormTest from './components/auth/loginForm';
 import { Router } from './Router';
+import { observer } from 'mobx-react-lite';
+import { mainStoreContext } from './store/MainStore';
 
-function getHello() {
-  axios.get('http://70.12.247.106:8001/hello')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-}
+export const App: React.FC = observer(() => {
+  const mainStore = useContext(mainStoreContext);
 
-export const App = () => {
-  const [count, setCount] = useState(0);
+  mainStore.screenHeight = Dimensions.get('screen').height;
+  mainStore.footerHeight = 30;
+  mainStore.scrollviewHeight = mainStore.screenHeight - mainStore.footerHeight;
 
   return (
-    <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Step One</Text>
-      <Text style={styles.sectionDescription}>
-        Edit <Text style={styles.highlight}>App.tsx</Text> to change
-        this screen and then come back to see your edits.
-              </Text>
-      <Text style={styles.sectionDescription}>{count}</Text>
-      <Button title="increment" onPress={() => setCount(count + 1)}/>
-      <Button onPress={getHello} title="getHello"/>
-      <LoginFormTest></LoginFormTest>
-      <Router />
+    <View style={{height: mainStore.screenHeight, flex: 1}}>
+      <ScrollView style={{height: mainStore.scrollviewHeight, paddingBottom: 30}}>
+        <View style={styles.sectionContainer}>
+          <Router />
+        </View>
+      </ScrollView>
+      <View style={[styles.footer]}>
+        <TouchableOpacity onPress={()=>mainStore.currentPage="mainPage"} style={{alignItems: "baseline", flex: 1, flexDirection: "row"}}><Text style={{color:'#FFFFFF'}}>Main</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=>mainStore.currentPage="loginPage"} style={{alignItems: "baseline", flex: 1, flexDirection: "row"}}><Text style={{color:'#FFFFFF'}}>Login</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=>mainStore.currentPage="mapPage"} style={{alignItems: "baseline", flex: 1, flexDirection: "row"}}><Text style={{color:'#FFFFFF'}}>Map</Text></TouchableOpacity>
+      </View>
+
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
-    paddingHorizontal: 24,
   },
   sectionTitle: {
     fontSize: 24,
@@ -51,8 +47,23 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
+    alignItems: "center"
   },
   highlight: {
     fontWeight: '700',
   },
+  footer: {
+    position: 'absolute',
+    height: 30,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    backgroundColor: '#3f3f3f',
+    flexDirection: 'row'
+  },
+  smallButton: {
+    height: 30,
+    flex: 1,
+    flexDirection: "column"
+  }
 });
