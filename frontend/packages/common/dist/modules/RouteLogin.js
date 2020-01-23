@@ -14,14 +14,14 @@ var React = __importStar(require("react"));
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var MainStore_1 = require("../store/MainStore");
-var loginForm_1 = __importDefault(require("../components/auth/loginForm"));
+var LoginForm_1 = __importDefault(require("../components/auth/LoginForm"));
 var mobx_react_lite_1 = require("mobx-react-lite");
 exports.RouteLogin = mobx_react_lite_1.observer(function () {
     var mainStore = react_1.useContext(MainStore_1.mainStoreContext);
     var currentPage = mainStore.currentPage;
     return (React.createElement(react_native_1.View, null,
         React.createElement(react_native_1.Text, { style: styles.sectionTitle }, currentPage),
-        React.createElement(loginForm_1.default, null)));
+        React.createElement(LoginForm_1.default, null)));
 });
 var styles = react_native_1.StyleSheet.create({
     mainBanner: {

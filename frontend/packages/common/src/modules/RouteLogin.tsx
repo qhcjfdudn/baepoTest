@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { mainStoreContext } from '../store/MainStore';
-import LoginForm from '../components/auth/loginForm';
+import LoginForm from '../components/auth/LoginForm';
 import { observer } from 'mobx-react-lite';
 
 export const RouteLogin: React.FC = observer(() => {

@@ -10,6 +10,7 @@ import {
 import axios from 'axios';
 import SignUpForm from './components/auth/SignUpForm';
 import { Router } from './Router';
+import TruckDetail from './components/foodtruckDetail/TruckDetail'
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from './store/MainStore';
 
@@ -26,6 +27,7 @@ export const App: React.FC = observer(() => {
         <View style={styles.sectionContainer}>
           <Router />
           <SignUpForm></SignUpForm>
+          <TruckDetail/>
         </View>
       </ScrollView>
       <View style={[styles.footer]}>

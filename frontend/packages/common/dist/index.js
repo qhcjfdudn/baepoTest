@@ -6,10 +6,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importStar(require("react"));
 var react_native_1 = require("react-native");
+var SignUpForm_1 = __importDefault(require("./components/auth/SignUpForm"));
 var Router_1 = require("./Router");
+var TruckDetail_1 = __importDefault(require("./components/foodtruckDetail/TruckDetail"));
 var mobx_react_lite_1 = require("mobx-react-lite");
 var MainStore_1 = require("./store/MainStore");
 exports.App = mobx_react_lite_1.observer(function () {
@@ -20,7 +25,9 @@ exports.App = mobx_react_lite_1.observer(function () {
     return (react_1.default.createElement(react_native_1.View, { style: { height: mainStore.screenHeight, flex: 1 } },
         react_1.default.createElement(react_native_1.ScrollView, { style: { height: mainStore.scrollviewHeight, paddingBottom: 30 } },
             react_1.default.createElement(react_native_1.View, { style: styles.sectionContainer },
-                react_1.default.createElement(Router_1.Router, null))),
+                react_1.default.createElement(Router_1.Router, null),
+                react_1.default.createElement(SignUpForm_1.default, null),
+                react_1.default.createElement(TruckDetail_1.default, null))),
         react_1.default.createElement(react_native_1.View, { style: [styles.footer] },
             react_1.default.createElement(react_native_1.TouchableOpacity, { onPress: function () { return mainStore.currentPage = "mainPage"; }, style: { alignItems: "baseline", flex: 1, flexDirection: "row" } },
                 react_1.default.createElement(react_native_1.Text, { style: { color: '#FFFFFF' } }, "Main")),
