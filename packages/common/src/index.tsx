@@ -9,6 +9,8 @@ import axios from 'axios';
 import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
 import { Router } from './Router';
+import TruckList from './components/list/TruckList'
+import TruckDetail from './components/foodtruckDetail/TruckDetail'
 
 function getHello() {
   axios.get('http://70.12.247.106:8001/hello')
@@ -25,7 +27,7 @@ export const App = () => {
 
   return (
     <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Step One</Text>
+      <Text style={styles.sectionTitle}>Step One!!!~</Text>
       <Text style={styles.sectionDescription}>
         Edit <Text style={styles.highlight}>App.tsx</Text> to change
         this screen and then come back to see your edits.
@@ -33,9 +35,12 @@ export const App = () => {
       <Text style={styles.sectionDescription}>{count}</Text>
       <Button title="increment" onPress={() => setCount(count + 1)}/>
       <Button onPress={getHello} title="getHello"/>
-      
+      <Text>---------</Text>
+      <TruckList/>
+      <TruckDetail/>
+      <Text>---------</Text>
       <LoginForm></LoginForm>
-      
+      <Text>텍스트</Text>
       <SignUpForm></SignUpForm>
       <Router />
     </View>
