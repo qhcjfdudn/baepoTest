@@ -10,9 +10,10 @@ import {
 import axios from 'axios';
 import SignUpForm from './components/auth/SignUpForm';
 import { Router } from './Router';
-import TruckDetail from './components/foodtruckDetail/TruckDetail'
+import TruckDetail from './components/seller/SellerMain'
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from './store/MainStore';
+import SellerMain from './components/seller/SellerMain';
 
 export const App: React.FC = observer(() => {
   const mainStore = useContext(mainStoreContext);
@@ -27,7 +28,7 @@ export const App: React.FC = observer(() => {
         <View style={styles.sectionContainer}>
           <Router />
           <SignUpForm></SignUpForm>
-          <TruckDetail/>
+          <SellerMain/>
         </View>
       </ScrollView>
       <View style={[styles.footer]}>

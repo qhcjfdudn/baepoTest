@@ -14,9 +14,9 @@ var react_1 = __importStar(require("react"));
 var react_native_1 = require("react-native");
 var SignUpForm_1 = __importDefault(require("./components/auth/SignUpForm"));
 var Router_1 = require("./Router");
-var TruckDetail_1 = __importDefault(require("./components/foodtruckDetail/TruckDetail"));
 var mobx_react_lite_1 = require("mobx-react-lite");
 var MainStore_1 = require("./store/MainStore");
+var SellerMain_1 = __importDefault(require("./components/seller/SellerMain"));
 exports.App = mobx_react_lite_1.observer(function () {
     var mainStore = react_1.useContext(MainStore_1.mainStoreContext);
     mainStore.screenHeight = react_native_1.Dimensions.get('screen').height;
@@ -27,7 +27,7 @@ exports.App = mobx_react_lite_1.observer(function () {
             react_1.default.createElement(react_native_1.View, { style: styles.sectionContainer },
                 react_1.default.createElement(Router_1.Router, null),
                 react_1.default.createElement(SignUpForm_1.default, null),
-                react_1.default.createElement(TruckDetail_1.default, null))),
+                react_1.default.createElement(SellerMain_1.default, null))),
         react_1.default.createElement(react_native_1.View, { style: [styles.footer] },
             react_1.default.createElement(react_native_1.TouchableOpacity, { onPress: function () { return mainStore.currentPage = "mainPage"; }, style: { alignItems: "baseline", flex: 1, flexDirection: "row" } },
                 react_1.default.createElement(react_native_1.Text, { style: { color: '#FFFFFF' } }, "Main")),
