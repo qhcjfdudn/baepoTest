@@ -1,25 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Button,
+    Image,
     View,
     Text,
     StyleSheet,
  } from "react-native";
  import MenuList from './MenuList';
 import Line from '../Line'
-
-const res= {
-  truck: {
-    title: "스누피의 네네트럭",
-    intro: "저희 가게 많이 사랑해주세요."
-  },
-  menu: [
-    {name: '더 진한 초코우유', price: 1500},
-    {name: '더 진한 딸기우유',  price: 1500},
-    {name: '더 진한 메론우유',  price: 1500},
-    {name: '더 진한 바나나우유',  price: 1500},
-  ]
-}
+import axios from 'axios'
 
 const styles = StyleSheet.create({
   container: {
@@ -40,23 +28,45 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => {
+export default () => {  
+  const [data, setData] = useState('');
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        'http://localhost:8001/trucks/1',
+      );
+      setData(result.data);
+      console.log(JSON.stringify(result.data));
+    };
+    fetchData();
+  }, []);
+
     return (
       <View style={styles.container}>
         
+      <Line></Line>
+
       <View style={styles.title}>
-      <Text>{res.truck.title}</Text>
-    </View>
+      <Image
+        style={{width: 50, height: 50}}
+        source={{uri: data.imgURL}}
+      />
+        <Text>푸드트럭 이름</Text>
+        <Text>{data.title}</Text>
+      </View>
 
-    <Line></Line>
+      <Line></Line>
 
-    <View>
-      <Text>소개글</Text>
-      <Text>{res.truck.intro}</Text>
-    </View>
+      <View>
+        <Text>소개글</Text>
+        <Text>{data.contents}</Text>
+      </View>
 
-        <Line></Line>
-      <MenuList menulist={res.menu}></MenuList>
+      <Line></Line>
+      
+      <MenuList menulist={data.menus}></MenuList>
 
       <Line></Line>
       </View>
