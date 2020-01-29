@@ -1,4 +1,5 @@
 import React, { Component, useContext, useEffect } from 'react';
+import { View } from "react-native";
 import { NaverMap, Marker } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
@@ -17,12 +18,13 @@ export const Maps = observer(() => {
   const getMyLocation = () => {
     if (navigator.geolocation) { // GPS를 지원하면
       navigator.geolocation.getCurrentPosition(function(position) {
-        alert(position.coords.latitude + ' ' + position.coords.longitude);
-        mapStore.userLatitude = position.coords.latitude;
-        mapStore.userLongitude = position.coords.longitude;
-        
-        console.log(mapStore.userLatitude + ", " + mapStore.userLongitude)
-        naver.maps.panTo()
+        mapStore.userCenter = {
+          lat: position.coords.latitude, 
+          lng: position.coords.longitude
+        };
+        mapStore.center = mapStore.userCenter;
+        console.log(mapStore.userCenter);
+
       }, function(error) {
         console.error(error);
       }, {
@@ -57,14 +59,15 @@ export const Maps = observer(() => {
   const panToNaver = (latitude, longitude) => {
     mapStore.center = {lat: latitude, lng: longitude};
     console.log(mapStore.center.lat + ", " + mapStore.center.lng)
-  }
+  }  
 
   useEffect(() => { // 라이프사이클 주기때문에 이렇게 하지 않으면, 렌더할 때 무한히 돈당..
     initMarkers()
+    getMyLocation()
   }, []);
 
   return (
-      <div>
+      <View>
         <button onClick={() => getMyLocation()}> 내 위치가 어디니??</button>
         <button onClick={() => panToNaver(37.36, 127.105399)}>Pan To Naver</button>
         <button onClick={() => initMarkers() }>만들자 마커들</button>
@@ -74,12 +77,15 @@ export const Maps = observer(() => {
         <NaverMap
           id='naverMap' 
           style={{width: '100%', height: '400px'}}
-          defaultCenter={new naver.maps.LatLng(37.3595704, 127.105399)} //지도의 초기 중심 좌표
+          defaultCenter={mapStore.userCenter} //지도의 초기 중심 좌표
           defaultZoom={14} //지도의 초기 줌 레벨
-          center={ mapStore.center } >
+          center={ mapStore.center }>
+
+          <Marker // 내 위치를 띄우는 마커
+            position={mapStore.userCenter}/> 
+
           { make_markers }
         </NaverMap>
-        
-      </div>
+      </View>
   )
 })
