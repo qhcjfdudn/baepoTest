@@ -1,38 +1,18 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useEffect } from 'react';
 import { NaverMap, Marker } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
+import axios from 'axios';
 
 export const Maps = observer(() => {
   const mainStore = useContext(mainStoreContext);
   const mapStore = useContext(MapStoreContext);
 
   /*1. 내 위치를 받는 메소드
-    2. 백엔드로부터 푸드트럭 데이터를 받아오는 메소드
-    3. 지도 위에 마커를 그리는 메소드(내 위치를 기반하여 마커를 띄워주는 것으로 확장 필요)
+    2. 백엔드로부터 푸드트럭 데이터를 받아오는 메소드(해결)
+    3. 지도 위에 마커를 그리는 메소드(해결, 내 위치를 기반하여 마커를 띄워주는 것으로 확장 필요)
   */
-
-  const dummy = [
-    {
-        "id": 1,
-        "title": "title",
-        "contents": "cpnmt",
-        "imgURL": "https://avatars2.githubusercontent.com/u/22673963?s=400&v=4",
-        "latitude": 37.123,
-        "longitude": 125.12312,
-        "distance": "11 m"
-    },
-    {
-        "id": 2,
-        "title": "dduckbokki",
-        "contents": "아주아주아주아주~매워!",
-        "imgURL": "https://avatars2.githubusercontent.com/u/22673963?s=400&v=4",
-        "latitude": 37.5005,
-        "longitude": 127.037,
-        "distance": "12727 km"
-    }
-];
 
   const getMyLocation = () => {
     if (navigator.geolocation) { // GPS를 지원하면
@@ -55,23 +35,42 @@ export const Maps = observer(() => {
     }
   }
 
-  const make_markers = dummy.map((element, index) => {
+  const initMarkers = () => {
+    axios({
+      url: mainStore.proxy + '/trucks',
+      method: 'get'
+    }).then((response) => {
+      mapStore.markers = response.data;
+      console.log(mapStore.markers);
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  const make_markers = mapStore.markers.map((element, index) => {
     return <Marker key={index}
         position={{lat:element.latitude, lng:element.longitude}}
       />
-  })
+  });
 
   const panToNaver = (latitude, longitude) => {
     mapStore.center = {lat: latitude, lng: longitude};
     console.log(mapStore.center.lat + ", " + mapStore.center.lng)
   }
 
+  useEffect(() => { // 라이프사이클 주기때문에 이렇게 하지 않으면, 렌더할 때 무한히 돈당..
+    initMarkers()
+  }, []);
+
   return (
       <div>
         <button onClick={() => getMyLocation()}> 내 위치가 어디니??</button>
         <button onClick={() => panToNaver(37.36, 127.105399)}>Pan To Naver</button>
+        <button onClick={() => initMarkers() }>만들자 마커들</button>
         <p>lat: {mapStore.center.lat}</p>
         <p>lng: {mapStore.center.lng}</p>
+        
         <NaverMap
           id='naverMap' 
           style={{width: '100%', height: '400px'}}
@@ -80,6 +79,7 @@ export const Maps = observer(() => {
           center={ mapStore.center } >
           { make_markers }
         </NaverMap>
+        
       </div>
   )
 })
