@@ -47,8 +47,8 @@ export const Navbar: React.FC = observer(() => {
         />
         <Text style={styles.navButtonText}>Map</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => mainStore.currentPage = "truckDetailPage"} style={styles.navButton}>
-        <Text style={styles.navButtonText}>TruckDetail</Text>
+      <TouchableOpacity onPress={() => mainStore.currentPage = "searchList"} style={styles.navButton}>
+        <Text style={styles.navButtonText}>SearchList</Text>
       </TouchableOpacity>
     </View>
   )
