@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
-    Image,
-    View,
-    Text,
-    StyleSheet,
- } from "react-native";
- import MenuList from './MenuList';
+  Image,
+  View,
+  Text,
+  StyleSheet,
+} from "react-native";
+import MenuList from './MenuList';
 import Line from '../Line'
 import axios from 'axios'
+import { searchResultContext } from '../../store/SearchStore';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +37,7 @@ interface IState {
   menus: []
 }
 
-export default () => {  
+export default () => {
   const [data, setData] = useState<IState>();
 
 
@@ -51,16 +52,16 @@ export default () => {
     fetchData();
   }, []);
 
-    return (
-      <View style={styles.container}>
-        
+  return (
+    <View style={styles.container}>
+
       <Line></Line>
 
       <View style={styles.title}>
-      <Image
-        style={{width: 50, height: 50}}
-        source={{uri: data.imgURL}}
-      />
+        <Image
+          style={{ width: 50, height: 50 }}
+          source={{ uri: data.imgURL }}
+        />
         <Text>푸드트럭 이름</Text>
         <Text>{data.title}</Text>
       </View>
@@ -73,10 +74,19 @@ export default () => {
       </View>
 
       <Line></Line>
-      
+
       <MenuList menulist={data.menus}></MenuList>
 
       <Line></Line>
+    </View>
+  )
+}
+
+export const TruckDetailDummy: React.FC = () => {
+  const searchResultStore = useContext(searchResultContext)
+  return (searchResultStore.isSelected === true
+      ? <View style={{ height: 1000, width: '100%', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+        <Text>{searchResultStore.selectedItem} detail - dummy. update when backend is ready.</Text>
       </View>
-    )
+      : <View></View>)
 }
