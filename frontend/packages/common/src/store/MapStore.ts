@@ -7,8 +7,13 @@ class MapStore {
     lat: 37.3595704,
     lng: 127.105399
   }
-  @observable userLatitude: number = 37.3595704;
-  @observable userLongitude: number = 127.105399;
+  @observable markers = [
+  ]
+
+  @observable userCenter = {
+      lat: 37.3595704,
+      lng: 127.105399
+  }
 }
 
 export const MapStoreContext = createContext(new MapStore());
