@@ -7,7 +7,7 @@ class MapStore {
     lat: 37.3595704,
     lng: 127.105399
   }
-  @observable markers = [
+  @observable.ref markers = [
   ]
 
   @observable userCenter = {
