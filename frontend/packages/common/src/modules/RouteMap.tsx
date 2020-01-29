@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { StyleSheet, Text, View, Button, Dimensions, TouchableOpacity } from 'react-native';
 import { mainStoreContext } from '../store/MainStore';
 import { observer } from 'mobx-react-lite';
-import { RouteList } from './RouteList';
+import Maps from '../components/Maps';
 
 export const RouteMap: React.FC = observer(() => {
   const mainStore = useContext(mainStoreContext);
@@ -14,6 +14,7 @@ export const RouteMap: React.FC = observer(() => {
       <Text style={styles.sectionTitle}>{currentPage}</Text>
       <RouteList />
       {/* put content here */}
+      <Maps />
     </View>
   )
 })
