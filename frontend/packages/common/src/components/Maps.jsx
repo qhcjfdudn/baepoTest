@@ -3,7 +3,6 @@ import { NaverMap, Marker } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
-import axios from 'axios';
 
 export const Maps = observer(() => {
   const mainStore = useContext(mainStoreContext);
@@ -23,18 +22,6 @@ export const Maps = observer(() => {
         
         console.log(mapStore.userLatitude + ", " + mapStore.userLongitude)
         naver.maps.panTo()
-        // var latlng = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    
-        // var map_options = {
-        //     center:latlng,
-        //     zoom:14,
-        // }
-        
-        // var map = new naver.maps.Map('map', map_options);
-        
-        // var marker = new naver.maps.Marker({position:latlng,map:map,title:"You are here!"});
-
-
       }, function(error) {
         console.error(error);
       }, {
@@ -52,8 +39,7 @@ export const Maps = observer(() => {
   }
 
   const panToNaver = (latitude, longitude) => {
-    mapStore.center.lat = latitude;
-    mapStore.center.lng = longitude;
+    mapStore.center = {lat: latitude, lng: longitude};
     console.log(mapStore.center.lat + ", " + mapStore.center.lng)
   }
 
@@ -71,10 +57,7 @@ export const Maps = observer(() => {
           style={{width: '100%', height: '400px'}}
           defaultCenter={new naver.maps.LatLng(37.3595704, 127.105399)} //지도의 초기 중심 좌표
           defaultZoom={14} //지도의 초기 줌 레벨
-
           center={ mapStore.center }
-          // onCenterChanged={() => naver.maps.Map.panTo(new naver.maps.LatLng(mapStore.center.lat, mapStore.center.lng))}
-
         />
       </div>
   )

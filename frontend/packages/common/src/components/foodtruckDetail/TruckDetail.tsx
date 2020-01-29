@@ -28,8 +28,16 @@ const styles = StyleSheet.create({
   }
 })
 
+interface IState {
+  id: Number,
+  imgURL: string,
+  title: string,
+  contents: string,
+  menus: []
+}
+
 export default () => {  
-  const [data, setData] = useState('');
+  const [data, setData] = useState<IState>();
 
 
   useEffect(() => {
