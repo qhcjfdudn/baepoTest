@@ -1,26 +1,28 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { mainStoreContext } from '../store/MainStore';
+import { View, TouchableOpacity, Text, Button } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { SearchList } from '../components/result/SearchList';
 import { CustomStyle } from '../static/CustomStyle';
-import TruckDetail from '../components/foodtruckDetail/TruckDetail';
+import TruckDetail, { TruckDetailDummy } from '../components/foodtruckDetail/TruckDetail';
+import { searchResultContext } from '../store/SearchStore';
 
 export const RouteList: React.FC = observer(() => {
-  const mainStore = useContext(mainStoreContext);
+  const searchResultStore = useContext(searchResultContext)
 
-  if (status) {
-    return (
-      <View>
-        <SearchList />
-        <TruckDetail />
-      </View>
-    )
+  const ItemSelect: React.FC = () => {
+    return <Button title={searchResultStore.isSelected ? 'true' : 'close'} onPress={() => {
+      searchResultStore.isSelected = !searchResultStore.isSelected
+    }} />
   }
-  else {
-    return (
-      <View><Text>list not enabled</Text></View>
-    )
-  }
+
+  return (searchResultStore.isSelected === true ?
+    <View>
+      <ItemSelect />
+      <TruckDetailDummy />
+    </View>
+    : <View>
+      <SearchList />
+    </View>
+  )
 })

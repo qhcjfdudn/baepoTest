@@ -85,6 +85,7 @@ export const SearchList: React.FC = () => {
         }
       })}
     </View>
+    
   )
 }
 
