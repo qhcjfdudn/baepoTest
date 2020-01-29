@@ -32,8 +32,8 @@ export default (props:IProps) => {
           id={item.id}
           imgURL={item.imgURL}
           content={item.content}
-          >
-        </Menu>}
+          />
+        }
         
           keyExtractor={item => item.name}
       />

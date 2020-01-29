@@ -4,28 +4,23 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { mainStoreContext } from '../store/MainStore';
 import { observer } from 'mobx-react-lite';
 import { SearchList } from '../components/result/SearchList';
+import { CustomStyle } from '../static/CustomStyle';
+import TruckDetail from '../components/foodtruckDetail/TruckDetail';
 
 export const RouteList: React.FC = observer(() => {
   const mainStore = useContext(mainStoreContext);
-  const getCoordinate = () => {
-    const cur = navigator.geolocation.getCurrentPosition(
-      function (position) {
-        alert(position)
-        mainStore.testCurrentLocation = position
-      },
-      function (positionError) {
-        console.log('error', positionError)
-      }
+
+  if (status) {
+    return (
+      <View>
+        <SearchList />
+        <TruckDetail />
+      </View>
     )
   }
-
-  return (
-    <View>
-      <SearchList />
-      <TouchableOpacity onPress={getCoordinate}>
-        <Text>test get current position</Text>
-        <Text>{mainStore.testCurrentLocation}</Text>
-      </TouchableOpacity>
-    </View>
-  )
+  else {
+    return (
+      <View><Text>list not enabled</Text></View>
+    )
+  }
 })
