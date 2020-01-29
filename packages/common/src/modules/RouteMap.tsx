@@ -12,7 +12,6 @@ export const RouteMap: React.FC = observer(() => {
   return (
     <View>
       <Text style={styles.sectionTitle}>{currentPage}</Text>
-      <RouteList />
       {/* put content here */}
       <Maps />
     </View>
