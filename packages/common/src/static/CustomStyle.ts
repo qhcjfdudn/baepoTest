@@ -7,6 +7,10 @@ export const CustomText = StyleSheet.create({
     fontWeight: '700',
     fontSize: 24
   },
+  titleHN: {
+    fontFamily: "Helvetica Neue, sans-serif",
+    fontWeight: '700'
+  },
   title: {
     fontFamily: "sans-serif, Gill Sans",
     fontWeight: '700',
@@ -14,7 +18,10 @@ export const CustomText = StyleSheet.create({
   body: {
     fontFamily: 'sans-serif, Gill Sans',
     fontWeight: '500'
-  }
+  },
+  textCenter: {
+    textAlign: 'center'
+  },
 })
 
 export const CustomStyle = StyleSheet.create({
