@@ -10,25 +10,7 @@ import Line from '../Line'
 import axios from 'axios'
 import { searchResultContext, searchStoreContext } from '../../store/SearchStore';
 import { mainStoreContext } from '../../store/MainStore';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  title: {
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  line: {
-    borderBottomWidth: 1,
-    borderColor: '#eeeeee',
-    width: '95%',
-    margin: 'auto',
-  },
-  intro: {
-    fontSize: 10
-  }
-})
+import { CustomStyle } from '../../static/CustomStyle';
 
 interface IState {
   id: Number,
@@ -38,7 +20,7 @@ interface IState {
   menus: []
 }
 
-export default () => {
+export const TruckDetail: React.FC = () => {
   const mainStore = useContext(mainStoreContext)
   const searchResultStore = useContext(searchResultContext)
   const [data, setData] = useState<IState>({
@@ -89,3 +71,24 @@ export const TruckDetailDummy: React.FC = () => {
       </View>
       : <View></View>)
 }
+
+const localStyle = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  title: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
+  line: {
+    borderBottomWidth: 1,
+    borderColor: '#eeeeee',
+    width: '95%',
+    margin: 'auto',
+  },
+  intro: {
+    fontSize: 10
+  }
+})
+
+const styles = {...CustomStyle, ...localStyle}

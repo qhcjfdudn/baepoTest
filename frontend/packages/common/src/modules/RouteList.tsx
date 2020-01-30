@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text, Button } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { SearchList } from '../components/result/SearchList';
 import { CustomStyle } from '../static/CustomStyle';
-import TruckDetail, { TruckDetailDummy } from '../components/foodtruckDetail/TruckDetail';
+import { TruckDetail, TruckDetailDummy } from '../components/foodtruckDetail/TruckDetail';
 import { searchResultContext, searchStoreContext } from '../store/SearchStore';
 
 export const RouteList: React.FC = observer(() => {
