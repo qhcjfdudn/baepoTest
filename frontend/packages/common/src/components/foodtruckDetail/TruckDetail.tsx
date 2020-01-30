@@ -46,19 +46,15 @@ export const TruckDetail: React.FC = () => {
           source={{ uri: data.imgURL ? data.imgURL : '' }}
           defaultSource={{uri: `https://picsum.photos/id/${data.id}/200`}}
       />
-      <View style={[styles.title, { backgroundColor: '#f2be46', width: '70%', paddingHorizontal: '4%', paddingVertical: '2%', borderRadius: 9, alignItems: 'center'}]}>
-        <Text style={[styles.titleHN, {fontSize: 24}]}>{data.title}</Text>
+      <View style={{paddingBottom: 10, backgroundColor: '#edaa11', width: '70%',  alignSelf: 'center', borderRadius: 9, marginBottom: 5}}>
+        <View style={{ width: '100%', backgroundColor: '#f2be46', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 9, alignItems: 'center'}}>
+          <Text style={[styles.titleHN, {fontSize: 24}]}>{data.title}</Text>
+        </View>
       </View>
-      <View>
-        <Text>한 줄 소개</Text>
-        <Text>{data.contents}</Text>
+      <View style={styles.truckContentsContainer}>
+        <Text style={[CustomText.italic, CustomText.body, CustomText.textCenter, {fontSize: 16}]}>{data.contents}</Text>
       </View>
-      <Line></Line>
-      <MenuList menulist={data.menus} />
-      <MenuList menulist={data.menus} />
-      <MenuList menulist={data.menus} />
-      <MenuList menulist={data.menus} />
-      <MenuList menulist={data.menus} />
+
       <MenuList menulist={data.menus} />
       <Line></Line>
     </View>
@@ -90,7 +86,10 @@ const localStyle = StyleSheet.create({
   },
   intro: {
     fontSize: 10
-  }
+  },
+  truckContentsContainer: {
+    paddingBottom: 1
+  },
 })
 
 const styles = {...CustomText, ...CustomStyle, ...localStyle}
