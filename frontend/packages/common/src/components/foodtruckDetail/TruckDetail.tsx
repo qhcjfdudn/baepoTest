@@ -8,7 +8,8 @@ import {
 import MenuList from './MenuList';
 import Line from '../Line'
 import axios from 'axios'
-import { searchResultContext } from '../../store/SearchStore';
+import { searchResultContext, searchStoreContext } from '../../store/SearchStore';
+import { mainStoreContext } from '../../store/MainStore';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,20 +32,24 @@ const styles = StyleSheet.create({
 
 interface IState {
   id: Number,
-  imgURL: string,
+  imgURL?: string,
   title: string,
   contents: string,
   menus: []
 }
 
 export default () => {
-  const [data, setData] = useState<IState>();
+  const mainStore = useContext(mainStoreContext)
+  const searchResultStore = useContext(searchResultContext)
+  const [data, setData] = useState<IState>({
+    id: 0, imgURL: '', title: '', contents: '', menus: []
+  });
 
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        'http://localhost:8001/trucks/1',
+        `${mainStore.proxy}/trucks/${searchResultStore.selectedItem}`,
       );
       setData(result.data);
       console.log(JSON.stringify(result.data));
@@ -54,29 +59,23 @@ export default () => {
 
   return (
     <View style={styles.container}>
-
       <Line></Line>
-
       <View style={styles.title}>
         <Image
           style={{ width: 50, height: 50 }}
-          source={{ uri: data.imgURL }}
+          source={{ uri: data.imgURL ? data.imgURL : '' }}
+          defaultSource={{uri: `https://picsum.photos/id/${data.id}/200`}}
         />
         <Text>푸드트럭 이름</Text>
         <Text>{data.title}</Text>
       </View>
-
       <Line></Line>
-
       <View>
         <Text>소개글</Text>
         <Text>{data.contents}</Text>
       </View>
-
       <Line></Line>
-
       <MenuList menulist={data.menus}></MenuList>
-
       <Line></Line>
     </View>
   )
