@@ -1,6 +1,6 @@
 import React, { Component, useContext, useEffect } from 'react';
-import { View } from "react-native";
-import { NaverMap, Marker } from 'react-naver-maps';
+import { View, Text, Image } from "react-native";
+import { NaverMap, Marker, Overlay } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
@@ -35,6 +35,7 @@ export const Maps = observer(() => {
     } else {
       alert('GPS를 지원하지 않습니다');
     }
+    mapStore.zoom = 14; // 내 위치를 누르면 default zoom으로 복귀
   }
 
   // 위치값을 전달해주어야 함.
@@ -47,7 +48,7 @@ export const Maps = observer(() => {
         + '&endLongitude=' + mapStore.bounds._ne._lng,
       method: 'get'
     }).then((response) => {
-      mapStore.markers = response.data;
+      mapStore.markers = response.data ? response.data : [];
       console.log("mapStore.markers : ", mapStore.markers);
       if(mapStore.markers.length === 0) alert("결과가 없습니다.");
     })
@@ -59,14 +60,12 @@ export const Maps = observer(() => {
   const make_markers = mapStore.markers.map((element, index) => {
     return <Marker key={index}
         position={{lat:element.latitude, lng:element.longitude}}
-
+        onClick={(e) => {
+          mapStore.stat = index;
+          console.log("e :", e);
+        }}
       />
   });
-
-  const panToNaver = (latitude, longitude) => {
-    mapStore.center = {_lat: latitude, _lng: longitude};
-    console.log(mapStore.center._lat + ", " + mapStore.center._lng)
-  }  
 
   useEffect(() => { // 라이프사이클 주기때문에 이렇게 하지 않으면, 렌더할 때 무한히 돈당..
     getMyLocation()
@@ -86,10 +85,23 @@ export const Maps = observer(() => {
     console.log("mapStore.center : ", mapStore.center);
   }
 
+  const newOverlay = ({stat}) => {
+    if(mapStore.stat === -1) return;
+    console.log("mapStore.stat : ", mapStore.stat);
+    console.log("markers data : ", mapStore.markers[mapStore.stat]);
+    return <View style={{position: 'absolute', left: 193, top: 448, width: 150, height: 150, zIndex: 1, backgroundColor:'#ffffff'}}>
+      <Image style={{height:50, width: 50}}
+        source={require('@foodtruckmap/common/src/static/icon_processed/noun_User_1485759.png')} />
+      {/* <Text>latitude : {mapStore.markers[mapStore.stat].latitude}</Text>
+      <Text>longitude : {mapStore.markers[mapStore.stat].longitude}</Text> */}
+      <Text>{mapStore.markers[mapStore.stat].title}</Text>
+      <button style={{width: 100,  }}>상세페이지로</button>
+      </View>
+  }
+
   return (
       <View>
         <button onClick={() => getMyLocation()}> 내 위치가 어디니??</button>
-        <button onClick={() => panToNaver(37.36, 127.105399)}>Pan To Naver</button>
         <button onClick={() => getMarkersFromLocation() }>현위치에서 탐색</button>
         <p>lat: {mapStore.center._lat}</p>
         <p>lng: {mapStore.center._lng}</p>
@@ -97,7 +109,7 @@ export const Maps = observer(() => {
         <NaverMap
           id='naverMap'
           style={{width: '100%', height: '400px'}}
-          defaultZoom={mapStore.zoom} //지도의 초기 줌 레벨
+          zoom={mapStore.zoom}
           onZoomChanged = { (zoom) => handleZoomChanged(zoom) }
           onBoundsChanged = { (bounds) => handleBoundsChanged(bounds) }
           center={ mapStore.center }
@@ -105,10 +117,13 @@ export const Maps = observer(() => {
           >
 
           <Marker // 내 위치를 띄우는 마커
-            position={mapStore.userCenter}/> 
-
+            position={mapStore.userCenter}
+            />
+          
           { make_markers }
         </NaverMap>
+
+        { newOverlay(mapStore.stat) }
       </View>
   )
 })
