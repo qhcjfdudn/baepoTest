@@ -10,25 +10,7 @@ import Line from '../Line'
 import axios from 'axios'
 import { searchResultContext, searchStoreContext } from '../../store/SearchStore';
 import { mainStoreContext } from '../../store/MainStore';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  title: {
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  line: {
-    borderBottomWidth: 1,
-    borderColor: '#eeeeee',
-    width: '95%',
-    margin: 'auto',
-  },
-  intro: {
-    fontSize: 10
-  }
-})
+import { CustomStyle, CustomText } from '../../static/CustomStyle';
 
 interface IState {
   id: Number,
@@ -38,7 +20,7 @@ interface IState {
   menus: []
 }
 
-export default () => {
+export const TruckDetail: React.FC = () => {
   const mainStore = useContext(mainStoreContext)
   const searchResultStore = useContext(searchResultContext)
   const [data, setData] = useState<IState>({
@@ -59,23 +41,21 @@ export default () => {
 
   return (
     <View style={styles.container}>
-      <Line></Line>
-      <View style={styles.title}>
-        <Image
-          style={{ width: 50, height: 50 }}
+      <Image
+          style={{ width: '100%', height: 150, marginBottom: -30 }}
           source={{ uri: data.imgURL ? data.imgURL : '' }}
           defaultSource={{uri: `https://picsum.photos/id/${data.id}/200`}}
-        />
-        <Text>푸드트럭 이름</Text>
-        <Text>{data.title}</Text>
+      />
+      <View style={{paddingBottom: 10, backgroundColor: '#edaa11', width: '70%',  alignSelf: 'center', borderRadius: 9, marginBottom: 5}}>
+        <View style={{ width: '100%', backgroundColor: '#f2be46', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 9, alignItems: 'center'}}>
+          <Text style={[styles.titleHN, {fontSize: 24}]}>{data.title}</Text>
+        </View>
       </View>
-      <Line></Line>
-      <View>
-        <Text>소개글</Text>
-        <Text>{data.contents}</Text>
+      <View style={styles.truckContentsContainer}>
+        <Text style={[CustomText.italic, CustomText.body, CustomText.textCenter, {fontSize: 16}]}>{data.contents}</Text>
       </View>
-      <Line></Line>
-      <MenuList menulist={data.menus}></MenuList>
+
+      <MenuList menulist={data.menus} />
       <Line></Line>
     </View>
   )
@@ -89,3 +69,27 @@ export const TruckDetailDummy: React.FC = () => {
       </View>
       : <View></View>)
 }
+
+const localStyle = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  title: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
+  line: {
+    borderBottomWidth: 1,
+    borderColor: '#eeeeee',
+    width: '95%',
+    margin: 'auto',
+  },
+  intro: {
+    fontSize: 10
+  },
+  truckContentsContainer: {
+    paddingBottom: 1
+  },
+})
+
+const styles = {...CustomText, ...CustomStyle, ...localStyle}
