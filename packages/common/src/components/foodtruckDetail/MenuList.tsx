@@ -11,7 +11,7 @@ interface IMenu {
   name: string,
   price: number,
   content: string,
-  imgURL: string,
+  imgURL?: string,
 }
 
  interface IProps {
