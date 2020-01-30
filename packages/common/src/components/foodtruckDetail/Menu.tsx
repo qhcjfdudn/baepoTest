@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    StyleSheet,
  } from "react-native";
 
 interface IProps {
@@ -16,7 +17,7 @@ interface IProps {
 export default (props:IProps) => {
 
   return (
-    <View>
+    <View style={styles.menuContainer}>
       <Image
       defaultSource={{uri: `https://picsum.photos/id/${props.id}/200`}}
       source={{uri: props.imgURL}}
@@ -29,3 +30,13 @@ export default (props:IProps) => {
   );
   
 };
+
+const styles = StyleSheet.create({
+  menuContainer: {
+    borderBottomColor: '#969698',
+    borderBottomWidth: 2,
+    borderStyle: "dashed",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  }
+})

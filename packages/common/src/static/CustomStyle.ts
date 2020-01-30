@@ -22,6 +22,9 @@ export const CustomText = StyleSheet.create({
   textCenter: {
     textAlign: 'center'
   },
+  italic: {
+    fontStyle: 'italic'
+  }
 })
 
 export const CustomStyle = StyleSheet.create({
