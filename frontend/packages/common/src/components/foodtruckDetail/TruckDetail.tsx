@@ -10,7 +10,7 @@ import Line from '../Line'
 import axios from 'axios'
 import { searchResultContext, searchStoreContext } from '../../store/SearchStore';
 import { mainStoreContext } from '../../store/MainStore';
-import { CustomStyle } from '../../static/CustomStyle';
+import { CustomStyle, CustomText } from '../../static/CustomStyle';
 
 interface IState {
   id: Number,
@@ -41,23 +41,25 @@ export const TruckDetail: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Line></Line>
-      <View style={styles.title}>
-        <Image
-          style={{ width: 50, height: 50 }}
+      <Image
+          style={{ width: '100%', height: 150, marginBottom: -30 }}
           source={{ uri: data.imgURL ? data.imgURL : '' }}
           defaultSource={{uri: `https://picsum.photos/id/${data.id}/200`}}
-        />
-        <Text>푸드트럭 이름</Text>
-        <Text>{data.title}</Text>
+      />
+      <View style={[styles.title, { backgroundColor: '#f2be46', width: '70%', paddingHorizontal: '4%', paddingVertical: '2%', borderRadius: 9, alignItems: 'center'}]}>
+        <Text style={[styles.titleHN, {fontSize: 24}]}>{data.title}</Text>
       </View>
-      <Line></Line>
       <View>
-        <Text>소개글</Text>
+        <Text>한 줄 소개</Text>
         <Text>{data.contents}</Text>
       </View>
       <Line></Line>
-      <MenuList menulist={data.menus}></MenuList>
+      <MenuList menulist={data.menus} />
+      <MenuList menulist={data.menus} />
+      <MenuList menulist={data.menus} />
+      <MenuList menulist={data.menus} />
+      <MenuList menulist={data.menus} />
+      <MenuList menulist={data.menus} />
       <Line></Line>
     </View>
   )
@@ -91,4 +93,4 @@ const localStyle = StyleSheet.create({
   }
 })
 
-const styles = {...CustomStyle, ...localStyle}
+const styles = {...CustomText, ...CustomStyle, ...localStyle}
