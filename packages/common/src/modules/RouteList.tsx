@@ -5,10 +5,18 @@ import { observer } from 'mobx-react-lite';
 import { SearchList } from '../components/result/SearchList';
 import { CustomStyle } from '../static/CustomStyle';
 import TruckDetail, { TruckDetailDummy } from '../components/foodtruckDetail/TruckDetail';
-import { searchResultContext } from '../store/SearchStore';
+import { searchResultContext, searchStoreContext } from '../store/SearchStore';
 
 export const RouteList: React.FC = observer(() => {
   const searchResultStore = useContext(searchResultContext)
+  const searchStore = useContext(searchStoreContext)
+
+  const getKeyword = () => {
+    const keyword = searchStore.searchKeyword === '' ? undefined : searchStore.searchKeyword
+    return keyword
+  }
+
+  console.log(getKeyword())
 
   const ItemSelect: React.FC = () => {
     return <Button title={searchResultStore.isSelected ? 'true' : 'close'} onPress={() => {
@@ -19,10 +27,10 @@ export const RouteList: React.FC = observer(() => {
   return (searchResultStore.isSelected === true ?
     <View>
       <ItemSelect />
-      <TruckDetailDummy />
+      <TruckDetail />
     </View>
     : <View>
-      <SearchList />
+      <SearchList searchKeyword={getKeyword()} />
     </View>
   )
 })
