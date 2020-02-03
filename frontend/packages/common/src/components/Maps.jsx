@@ -1,17 +1,14 @@
 import React, { Component, useContext, useEffect } from 'react';
-import { View, Text, Image } from "react-native";
+import { View, ListView, Text, Image, ScrollView } from "react-native";
 import { NaverMap, Marker } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
 import axios from 'axios';
-import { searchResultContext, searchStoreContext } from '../store/SearchStore';
-import { SearchList } from './result/SearchList';
 
 export const Maps = observer(() => {
   const mainStore = useContext(mainStoreContext);
   const mapStore = useContext(MapStoreContext);
-  const searchStore = useContext(searchStoreContext);
 
   /*1. 내 위치를 받는 메소드
     2. 백엔드로부터 푸드트럭 데이터를 받아오는 메소드(해결)
@@ -19,7 +16,6 @@ export const Maps = observer(() => {
   */
 
   const getMyLocation = () => {
-    console.log()
     if (navigator.geolocation) { // GPS를 지원하면
       navigator.geolocation.getCurrentPosition(function(position) {
         mapStore.userCenter = {
@@ -105,45 +101,32 @@ export const Maps = observer(() => {
       </View>
   }
 
-  const fab = () => {
-    return <View style={{position: 'absolute', left: mainStore.screenWidth / 2 - 20, 
-    top: mainStore.scrollviewHeight - 400, width: 40, height: 40, zIndex: 1, backgroundColor:'#aaaaaa'}}
-    onClick={(e) => {
-      // toggle 토글을 할 경우, 지도를 줄이고 끝이 아닌 지도를 지우고 새로 그리는 방향으로 해야 한다.
-      mapStore.listState = !mapStore.listState;
-      mapStore.mapHeight = "50%";
-      
-    }}
-    >
-      <Text>FAB</Text>
-
-      </View>
-  }
+  const makeList = mapStore.markers.map((element, index) => {
+    console.log("element : ", element);
+    return (
+      <View key={index}
+        id={element.id}
+        title={element.title}
+        contents={element.contents}
+        currentStatus={element.currentStatus}
+        imageUri={element.imgURL ? element.imgURL : ''}
+        latitude={element.latitude ? element.latitude : undefined}
+        longitude={element.longitude ? element.longitude : undefined}
+        onClick={(e) => {
+          console.log(`index : ${index}, e : ${e}`);
+        }}
+      />
+    )
+  });
 
   const showListView = () => {
     return (
-      <View style={{position: 'absolute', 
+      <ScrollView style={{position: 'absolute', 
       top: mainStore.scrollviewHeight / 2, 
-        width: mainStore.screenWidth, height: 100, zIndex: 1, backgroundColor:'#ffffff'}}
+        width: mainStore.screenWidth, height: mainStore.scrollviewHeight / 2, zIndex: 1, backgroundColor:'#ffffff'}}
       >
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-        <Text>xxxxx</Text>
-      </View>
-      
+        { makeList }
+      </ScrollView>
     )
   }
 
@@ -190,24 +173,41 @@ export const Maps = observer(() => {
   }
 
   return (
-      <View>
-        <button onClick={() => getMyLocation()}> 내 위치가 어디니??</button>
-        <button onClick={() => getMarkersFromLocation() }>현위치에서 탐색</button>
-        
+      <View>        
         {mapStore.listState == false && drawLargeMap()}
-
         {mapStore.listState == true && drawSmallMap()}
-        
-        
-        {/* <SearchList /> */}
 
-        { newOverlay(mapStore.stat) }
-        { fab() }
+        <View style={{position: 'absolute', left: 20, 
+          top: 20, width: 70, height: 40, zIndex: 1, backgroundColor:'#777777'}}
+          onClick={() => getMyLocation()}
+        >
+          <Text>내 위치</Text>
+        </View>
 
-        {/* 조건부 렌더링 소스 짜기 */}
-        {mapStore.listState == true && 
+        <View style={{position: 'absolute', left: 20, 
+          top: 80, width: 70, height: 40, zIndex: 1, backgroundColor:'#cccccc'}}
+          onClick={() => getMarkersFromLocation() }
+        >
+          <Text>트럭 검색</Text>
+        </View>
+
+        <View style={{position: 'absolute', left: 20,
+          top: 140, width: 70, height: 40, zIndex: 1, backgroundColor:'#aaaaaa'}}
+          onClick={(e) => {
+            // toggle 토글을 할 경우, 지도를 줄이고 끝이 아닌 지도를 지우고 새로 그리는 방향으로 해야 한다.
+            mapStore.listState = !mapStore.listState;
+            mapStore.mapHeight = "50%";
+          }}
+          >
+          <Text>리스트</Text>
+        </View>
+
+      { newOverlay(mapStore.stat) }
+
+        {mapStore.listState == true &&  // 리스트의 조건부 렌더링
           showListView()
         }
       </View>
   )
 })
+
