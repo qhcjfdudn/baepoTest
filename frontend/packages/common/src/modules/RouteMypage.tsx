@@ -20,9 +20,11 @@ export const RouteMypage : React.FC<Props> = observer(({history}) => {
     axios({
     url: mainStore.proxy + '/users/logout',
   }).then((response)=>{
-    if (response.data === 'true') {
+    if (response.data === true) {
       mainStore.isLoggedIn = false;
       mainStore.isSeller = false;
+      localStorage.removeItem('cookies')
+      history.replace('/')
     }
   }).catch((err)=> {
     console.log(err)
@@ -31,10 +33,10 @@ export const RouteMypage : React.FC<Props> = observer(({history}) => {
 
   return (
     <View>
-       <TouchableOpacity onPress={()=>{handleLogout(); history.replace('/')}} style={[styles.buttons, { alignSelf:'flex-end', flex: 1, width: '20%'}]}>
+       <TouchableOpacity onPress={()=>{handleLogout()}} style={[styles.buttons, { position: 'absolute', zIndex: 10, alignSelf:'flex-end', flex: 1, width: '20%'}]}>
             <Text style={{ color: Colors.white }}>로그아웃</Text>
        </TouchableOpacity>
-      {mainStore.isSeller === true ? <SellerMain /> : <Mypage />}
+      {mainStore.isSeller === false ? <SellerMain /> : <Mypage />}
     </View>
   )
 })

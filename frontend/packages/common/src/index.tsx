@@ -19,6 +19,20 @@ export const App: React.FC = observer(() => {
   mainStore.screenHeight = Dimensions.get('window').height;
   mainStore.scrollviewHeight = mainStore.screenHeight - mainStore.footerHeight - mainStore.headerHeight;
 
+  const checkAuth = () => {
+    const cookies = JSON.parse(localStorage.getItem('cookies'))
+    if (cookies) {
+      const expires = Date.parse(cookies.expires)
+      console.log('expires: ', expires, 'now: ', Date.now())
+      if (expires < Date.now()) {
+        return true
+      }
+    } else return false;
+  }
+
+  mainStore.isLoggedIn = checkAuth();
+  console.log(mainStore.isLoggedIn)
+
   return (
     <View style={{ height: mainStore.screenHeight, flex: 1 }}>
       <Header />
