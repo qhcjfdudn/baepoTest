@@ -25,6 +25,7 @@ export const RouteList: React.FC<Props> = observer(({history, match}) => {
     return keyword
   }
   
+  console.log(searchResultStore.searchResult)
   console.log(getKeyword())
 
   const CloseButton: React.FC = () => {
@@ -46,7 +47,6 @@ export const RouteList: React.FC<Props> = observer(({history, match}) => {
       </View>
     </View>
     : <View>
-      <Button title={'to main'} onPress={()=>{history.push('/') }}/>
       <SearchList searchKeyword={getKeyword()} />
     </View>
   )

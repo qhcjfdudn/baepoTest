@@ -6,6 +6,7 @@ import { mainStoreContext } from '../store/MainStore';
 import { NewLoginForm } from '../components/auth/LoginForm';
 import { SignupForm } from '../components/auth/SignUpForm';
 import { loginCurrentPage, loginStoreContext } from '../store/LoginStore';
+import { CustomStyle } from '../static/CustomStyle'
 import { Colors } from '../static/CustomColor';
 import { RouteComponentProps } from 'react-router-dom';
 import { History, LocationState } from 'history'
@@ -14,7 +15,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface FormProps {
-  history: History<LocationState>; 
+  history: History<LocationState>;
   location: any;
 }
 
@@ -25,7 +26,7 @@ const FormRouter: React.FC<FormProps> = ({ history, location }) => {
   )
 }
 
-export const RouteLogin: React.FC<Props> = observer(({history, location, match }) => {
+export const RouteLogin: React.FC<Props> = observer(({ history, location, match }) => {
 
   const mainStore = useContext(mainStoreContext);
   const loginStore = useContext(loginStoreContext)
@@ -36,12 +37,12 @@ export const RouteLogin: React.FC<Props> = observer(({history, location, match }
     } else {
       history.replace('/login')
     }
-    
+
   }
 
   return (
     <View>
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#ffffff' }}>
         <TouchableOpacity onPress={handleTapPage} style={[{ flex: 1, alignItems: 'center', height: 50, paddingTop: 10 },
         location.pathname === '/login' ? { borderBottomColor: Colors.deepcoral, borderBottomWidth: 3 } : {}]}>
           <Text>login</Text>
@@ -51,14 +52,15 @@ export const RouteLogin: React.FC<Props> = observer(({history, location, match }
           <Text>signup</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.loginTitle}>{location.pathname === '/login' ? 'welcome back !' : 'Hello new user !'}</Text>
-      <FormRouter history={history} location={location} />
-      <View style={{minHeight: 10}}></View>
+      <View>
+        <Text style={styles.loginTitle}>{location.pathname === '/login' ? 'welcome back !' : 'Hello new user !'}</Text>
+        <FormRouter history={history} location={location} />
+      </View>
     </View>
   )
 })
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   mainBanner: {
     height: 100,
     width: '100%',
@@ -75,3 +77,5 @@ const styles = StyleSheet.create({
     paddingTop: 16
   }
 })
+
+const styles = { ...CustomStyle, ...localStyles}
