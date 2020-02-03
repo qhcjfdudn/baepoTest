@@ -30,7 +30,6 @@ export const Routes = (Props: Props) => {
             <Route exact path='/mypage' component={RouteMypage} />
             <Redirect path='*' to='/' />
           </Switch>
-          <View style={{ backgroundColor: '#e4e4e5', flexGrow: 1 }}></View>
         </ScrollView>
         <Route component={Navbar} />
       </View>
