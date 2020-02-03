@@ -52,7 +52,7 @@ export const RouteMain: React.FC<Props> = observer(({history}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.staticInfo}>
+      <View style={[styles.staticInfo, {flexGrow: 1}]}>
         <Text style={styles.staticText}>
           <Text style={styles.staticTextLink} onPress={() => console.log('hello')}>팀 정보</Text> | <Text style={styles.staticTextLink} onPress={() => console.log('hello2')}>이용 약관</Text> | <Text style={styles.staticTextLink} onPress={() => console.log('hello3')}>개인정보처리방침</Text>
         </Text>
