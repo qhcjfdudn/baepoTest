@@ -7,7 +7,8 @@ class MainStore {
 
   // aws  http://54.180.141.50:8001
   // 호준 http://70.12.247.106:8001
-  @observable proxy: string = 'http://70.12.247.106:8001';
+  @observable proxy: string = 'http://54.180.141.50:8001';
+  // @observable proxy: string = 'http://70.12.247.106:8001';
   @observable screenWidth: number = 0;
   @observable screenHeight: number = 0;
   @observable footerHeight: number = 0;
