@@ -1,6 +1,6 @@
 import React, { Component, useContext, useEffect } from 'react';
-import { View, Text, Image, ScrollView, DrawerLayoutAndroidComponent } from "react-native";
-import { NaverMap, Marker, Overlay } from 'react-naver-maps';
+import { View, Text, Image } from "react-native";
+import { NaverMap, Marker } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
