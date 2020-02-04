@@ -5,12 +5,11 @@ import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
 import axios from 'axios';
-import { refDecorator } from 'mobx/lib/internal';
-import { History, LocationState } from 'history';
 
-export const Maps = observer(() => {
+export const Maps =  observer(({history}) => {
   const mainStore = useContext(mainStoreContext);
   const mapStore = useContext(MapStoreContext);
+
   // const searchResultStore = useContext(SearchResultContext);
 
   const getMyLocation = () => {
@@ -85,7 +84,7 @@ export const Maps = observer(() => {
       <Image style={{height:50, width: 50}}
         source={require('@foodtruckmap/common/src/static/icon_processed/noun_User_1485759.png')} />
       <Text>{mapStore.markers[mapStore.stat].title}</Text>
-      <button style={{width: 100,  }}>상세페이지로</button>
+      <button style={{width: 100,  }} onClick={() => handleRouteDetail(mapStore.markers[mapStore.stat])}>상세페이지로</button>
       </View>
   }
 
@@ -100,7 +99,7 @@ export const Maps = observer(() => {
       />
   });
 
-  const handleListClick = (el) => {
+  const handleListMarkerTrace = (el) => {
     console.log("choiced element : ", el);
 
     let defaultDistance = {
@@ -128,8 +127,6 @@ export const Maps = observer(() => {
       let minLng = focusCenter._lng - defaultDistance.x / 2;
       let maxLng = focusCenter._lng + defaultDistance.x / 2;
 
-      // console.log(`${minLat} ~ ${maxLat}, ${minLng} ~ ${maxLng}`)
-
       if(minLat > mapStore.userCenter.lat || maxLat < mapStore.userCenter.lat || 
         minLng > mapStore.userCenter.lng || maxLng < mapStore.userCenter.lng || 
         minLat > el.latitude || maxLat < el.latitude || 
@@ -149,8 +146,12 @@ export const Maps = observer(() => {
 
     handleCenter(focusCenter);
     mapStore.zoom = defaultZoom;
+    mapStore.selectedId = el.id;
+  }
 
-    // 라우팅을 위한 소스 작성. onClick을 한번 더 하면 바뀌는 것으로.
+  // 라우팅 소스 작성
+  const handleRouteDetail = (el) => {
+    history.push(`/trucks/${el.id}`)
   }
 
   const makeList = mapStore.markers.map((element, index) => {
@@ -159,7 +160,7 @@ export const Maps = observer(() => {
       <TouchableOpacity
         style={{ flexDirection: 'row' }}
         key={index} 
-        onPress={() => handleListClick(element)}>
+        onPress={() => mapStore.selectedId != element.id ? handleListMarkerTrace(element) : handleRouteDetail(element)}>
         <Image
           style={{ borderRadius: 30, width: 60, height: 60 }}
           source={{ uri: element.imgURL }} />

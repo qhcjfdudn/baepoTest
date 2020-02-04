@@ -22,6 +22,8 @@ class MapStore {
 
   @observable myPosState:boolean = false;
   @observable listState = false
+  @observable selectedId: number = -1;
+  
   //test
   @observable reftest: any;
   @observable stat: number = -1;
