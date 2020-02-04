@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 class MapStore {
   // user current pos
@@ -10,7 +10,7 @@ class MapStore {
   @observable.ref markers = [
       {}
   ]
-  @observable cleckedMarker = {}
+  @observable.ref markerData = {}
   @observable.ref userCenter = {
   }
   @observable zoom = 14
