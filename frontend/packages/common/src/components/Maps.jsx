@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
 import axios from 'axios';
+import { refDecorator } from 'mobx/lib/internal';
 
 export const Maps = observer(() => {
   const mainStore = useContext(mainStoreContext);
@@ -20,7 +21,7 @@ export const Maps = observer(() => {
         };
         mapStore.center = mapStore.userCenter;
         console.log("mapStore.userCenter : ", mapStore.userCenter);
-
+        mapStore.myPosState = !mapStore.reftest.updating
       }, function(error) {
         console.error(error);
       }, {
@@ -180,10 +181,12 @@ export const Maps = observer(() => {
         onBoundsChanged = { (bounds) => handleBoundsChanged(bounds) }
         center={ mapStore.center }
         onCenterChanged = { (center) => handleCenter(center) }
+        naverRef={ref => mapStore.reftest = ref}
         >
 
         <Marker // 내 위치를 띄우는 마커
           position={mapStore.userCenter}
+          visible={mapStore.myPosState}
           />
         
         { make_markers }
@@ -218,10 +221,19 @@ export const Maps = observer(() => {
         {mapStore.listState == true && drawSmallMap()}
 
         <View style={{position: 'absolute', left: 20, 
-          top: 20, width: 70, height: 40, zIndex: 1, backgroundColor:'#777777'}}
+          top: 20, width: 40, height: 40, borderRadius: 5, zIndex: 1, backgroundColor: mapStore.myPosState ? '#2F96FC' : '#777777'}}
           onClick={() => getMyLocation()}
         >
-          <Text>내 위치</Text>
+          <Image
+           style={{
+              tintColor: '#FFFFFF',
+              height: 40,
+              width: 40,
+              resizeMode: 'cover',
+              overflow: 'hidden'
+            }}
+            source={require('@foodtruckmap/common/src/static/icon_processed/noun_Pin_1015369.png')}
+          />
         </View>
 
         <View style={{position: 'absolute', left: 20, 

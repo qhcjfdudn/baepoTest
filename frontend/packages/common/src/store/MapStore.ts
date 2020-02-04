@@ -20,8 +20,10 @@ class MapStore {
   @observable fabtop;
   @observable mapHeight = "400px"
 
+  @observable myPosState:boolean = false;
   @observable listState = false
   //test
+  @observable reftest: any;
   @observable stat: number = -1;
 }
 
