@@ -6,6 +6,7 @@ import { mainStoreContext } from '../store/MainStore';
 import { MapStoreContext } from '../store/MapStore';
 import axios from 'axios';
 import { refDecorator } from 'mobx/lib/internal';
+import { History, LocationState } from 'history';
 
 export const Maps = observer(() => {
   const mainStore = useContext(mainStoreContext);
@@ -73,7 +74,6 @@ export const Maps = observer(() => {
   }
 
   const newOverlay = () => {
-    // if(mapStore.stat === -1) return;
     console.log("mapStore.stat : ", mapStore.stat);
     console.log("markers data : ", mapStore.markerData);
     return <View style={{position: 'absolute', 
@@ -100,13 +100,21 @@ export const Maps = observer(() => {
       />
   });
 
-  const defaultDistanceOn14Zoom = {
-    y: 0.00058,
-    x: 0.00101
-  }
-
   const handleListClick = (el) => {
     console.log("choiced element : ", el);
+
+    let defaultDistance = {
+      y: mapStore.bounds._max.y - mapStore.bounds._min.y,
+      x: mapStore.bounds._max.x - mapStore.bounds._min.x
+    }
+    let defaultZoom = mapStore.zoom;
+
+    while(defaultZoom != 1) {
+      defaultZoom--;
+      defaultDistance.y *= 2;
+      defaultDistance.x *= 2;
+    }
+  
     const focusCenter = {
       x: (el.longitude + mapStore.userCenter.lng) / 2,
       y: (el.latitude + mapStore.userCenter.lat) / 2,
@@ -114,13 +122,11 @@ export const Maps = observer(() => {
       _lng: (el.longitude + mapStore.userCenter.lng) / 2
     }
 
-    let deltaZoom = defaultDistanceOn14Zoom;
-    let z = 14;
-    while(z != 1) {
-      let minLat = focusCenter._lat - deltaZoom.y / 2;
-      let maxLat = focusCenter._lat + deltaZoom.y / 2;
-      let minLng = focusCenter._lng - deltaZoom.x / 2;
-      let maxLng = focusCenter._lng + deltaZoom.x / 2;
+    while(1) {
+      let minLat = focusCenter._lat - defaultDistance.y / 2;
+      let maxLat = focusCenter._lat + defaultDistance.y / 2;
+      let minLng = focusCenter._lng - defaultDistance.x / 2;
+      let maxLng = focusCenter._lng + defaultDistance.x / 2;
 
       // console.log(`${minLat} ~ ${maxLat}, ${minLng} ~ ${maxLng}`)
 
@@ -129,15 +135,20 @@ export const Maps = observer(() => {
         minLat > el.latitude || maxLat < el.latitude || 
         minLng > el.longitude || maxLng < el.longitude 
       ) {
-        z--;
-        deltaZoom.y *= 2;
-        deltaZoom.x *= 2;
+        defaultZoom--;
+        defaultDistance.y *= 2;
+        defaultDistance.x *= 2;
+        break;
       }
-      else break;
+      else {
+        defaultZoom++;
+        defaultDistance.y /= 2;
+        defaultDistance.x /= 2;
+      }
     }
 
     handleCenter(focusCenter);
-    mapStore.zoom = z;
+    mapStore.zoom = defaultZoom;
 
     // 라우팅을 위한 소스 작성. onClick을 한번 더 하면 바뀌는 것으로.
   }
@@ -204,6 +215,7 @@ export const Maps = observer(() => {
         onBoundsChanged = { (bounds) => handleBoundsChanged(bounds) }
         center={ mapStore.center }
         onCenterChanged = { (center) => handleCenter(center) }
+        naverRef={ref => mapStore.reftest = ref}
         >
 
         <Marker // 내 위치를 띄우는 마커
