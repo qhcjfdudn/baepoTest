@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 class MapStore {
   // user current pos
@@ -10,7 +10,7 @@ class MapStore {
   @observable.ref markers = [
       {}
   ]
-  @observable cleckedMarker = {}
+  @observable.ref markerData = {}
   @observable.ref userCenter = {
   }
   @observable zoom = 14
@@ -20,8 +20,12 @@ class MapStore {
   @observable fabtop;
   @observable mapHeight = "400px"
 
+  @observable myPosState:boolean = false;
   @observable listState = false
+  @observable selectedId: number = -1;
+  
   //test
+  @observable reftest: any;
   @observable stat: number = -1;
 }
 
