@@ -16,6 +16,7 @@ import axios from 'axios';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL='http://54.180.141.50:8001';
 
 export const App: React.FC = observer(() => {
   const mainStore = useContext(mainStoreContext);
