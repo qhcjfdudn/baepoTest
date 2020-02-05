@@ -62,7 +62,7 @@ export default () => {
 
   useEffect(() => {
 
-    axios.get(`${mainStore.proxy}/trucks/1`)
+    axios.get('/trucks/1')
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -114,7 +114,7 @@ export default () => {
     requestDto[target] = editText[target];
     console.log(requestDto);
 
-    axios.put(`${mainStore.proxy}/trucks/update/1`, requestDto)
+    axios.put('/trucks/update/1', requestDto)
       .then((res) => {
         console.log(res.data);
       })
