@@ -15,7 +15,6 @@ interface Props extends RouteComponentProps {}
 export const RouteMypage : React.FC<Props> = observer(({history}) => {
   const mainStore = React.useContext(mainStoreContext)
   console.log(mainStore.isSeller)
-  axios
   const handleLogout = () => {
     axios.get('/users/logout')
       .then((response)=>{
@@ -31,7 +30,7 @@ export const RouteMypage : React.FC<Props> = observer(({history}) => {
     }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
        <TouchableOpacity onPress={()=>{handleLogout()}} style={[styles.buttons, { position: 'absolute', zIndex: 10, alignSelf:'flex-end', flex: 1, width: '20%'}]}>
           <Text style={{ color: Colors.white }}>로그아웃</Text>
        </TouchableOpacity>
