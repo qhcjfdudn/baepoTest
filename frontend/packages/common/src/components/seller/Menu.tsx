@@ -6,8 +6,9 @@ import {
   TextInput,
   StyleSheet,
   Button,
+  TouchableOpacity,
 } from "react-native";
-import { CustomStyle } from "../../static/CustomStyle";
+import { CustomStyle, CustomText } from "../../static/CustomStyle";
 
 const LocalStyles = StyleSheet.create({
   form: {
@@ -29,7 +30,22 @@ const LocalStyles = StyleSheet.create({
     fontSize: 13,
     marginVertical: 5,
     marginLeft: 10
-  }
+  },
+  menuContainer: {
+    borderBottomColor: '#969698',
+    borderBottomWidth: 2,
+    borderStyle: "dashed",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    flex: 1
+  },
+  menuButton: {
+    flex: 1,
+    marginTop: 5,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
 });
 
 const styles = { ...CustomStyle, ...LocalStyles }
@@ -68,7 +84,7 @@ export default (props:IProps) => {
     props.handleMenuSubmit(props.id, requestDto);
     setIsEditing(false);
   }
-  
+
   const cancel = () => {
     setIsEditing(false);
   }
@@ -76,54 +92,75 @@ export default (props:IProps) => {
   const nonEditingComponent = () => {
     return (
       <View>
-        <Text style={[styles.input, LocalStyles.form]}>{props.name}</Text>
-        <Text style={[styles.input, LocalStyles.form]}>{props.content}</Text>
-        <Text style={[styles.input, LocalStyles.form]}>{props.price}</Text>
-          <Button title="수정" onPress={()=> setIsEditing(true)}></Button>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={[CustomText.title, { fontSize: 18 }]}>{props.name}</Text>
+          <View style={{ marginHorizontal: 10, flexGrow: 1, alignSelf: 'center',  borderStyle: 'dotted', borderColor: '#000000', borderWidth: 1 }}></View>
+          <Text style={[CustomText.title, { color: '#20a024', fontSize: 16 }]}>{props.price} 원</Text>
         </View>
+        <View>
+          <Text style={[CustomText.body]}>{props.content}</Text>
+        </View>
+        <TouchableOpacity style={[styles.menuButton, {backgroundColor: '#4177c9',}]} onPress={() => setIsEditing(true)}><Text style={{textAlign: 'center', color: '#FFFFFF', fontWeight: '700'}}>수정</Text></TouchableOpacity>
+      </View>
     )
-  }
+    }
 
   const editingComponent = () => {
     return (
-        <View>
+        <View style={{ marginLeft: 15, flexShrink: 1, alignSelf: 'center', width:'100%' }}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={{fontWeight: '700', marginRight: 5}}>메뉴</Text>
             <TextInput
-              style={[styles.input, LocalStyles.form]}
+              style={{ borderColor: '#303030', borderBottomWidth: 2, paddingVertical: 5, paddingHorizontal: 6 }}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               defaultValue={props.name}
               onChangeText={text => onChangeText('name', text)}
             />
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={{fontWeight: '700', marginRight: 5}}>가격</Text>
             <TextInput
-              style={[styles.input, LocalStyles.form]}
-              underlineColorAndroid="transparent"
-              autoCapitalize="none"
-              defaultValue={props.content}
-              onChangeText={text => onChangeText('content', text)}
-            />
-            <TextInput
-              style={[styles.input, LocalStyles.form]}
+              style={{ borderColor: '#303030', borderBottomWidth: 2, paddingVertical: 5, paddingHorizontal: 6 }}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               defaultValue={String(props.price)}
               onChangeText={text => onChangeText('price', text)}
             />
-            <Button title="완료" onPress={()=> submit()}></Button>
-            <Button title="취소" onPress={()=> cancel()}></Button>
           </View>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={{fontWeight: '700', marginRight: 5}}>내용</Text>
+            <TextInput
+              style={{ borderColor: '#303030', borderBottomWidth: 2, paddingVertical: 5, paddingHorizontal: 6 }}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              defaultValue={props.content}
+              onChangeText={text => onChangeText('content', text)}
+            />
+          </View>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <TouchableOpacity style={[styles.menuButton, {backgroundColor: '#4177c9',}]} onPress={() => submit()}><Text style={{textAlign: 'center', color: '#FFFFFF', fontWeight: '700'}}>등록</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.menuButton, {backgroundColor: '#798391',}]} onPress={() => cancel()}><Text style={{textAlign: 'center', color: '#FFFFFF', fontWeight: '700'}}>취소</Text></TouchableOpacity>
+          </View>
+        </View>
     )
   }
 
   return (
-    <View>
-      <Image
-      style={{width: 50, height: 50}}
-      source={{uri: props.imgURL}}
-      />  
-     {isEditing
-      ? editingComponent()
-      : nonEditingComponent()
-    }
+    <View style={styles.menuContainer}>
+      <View style={{ alignSelf: 'center' }}>
+        <Image
+          defaultSource={{ uri: `https://picsum.photos/id/${props.id}/200` }}
+          source={{ uri: props.imgURL }}
+          style={{ width: 70, height: 70, borderRadius: 10 }}
+        />
+      </View>
+      <View style={{ marginLeft: 15, flexShrink: 1, alignSelf: 'center', width:'100%' }}>
+        {isEditing
+          ? editingComponent()
+          : nonEditingComponent()
+        }
+      </View>
     </View>
   );
   
