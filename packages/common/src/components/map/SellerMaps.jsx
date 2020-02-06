@@ -1,12 +1,12 @@
 
 import React, { useContext, useEffect } from 'react';
-import { View, Image, Button } from "react-native";
+import { View, Image, Button, TouchableOpacity, Text } from "react-native";
 import { NaverMap } from 'react-naver-maps';
 import { observer } from 'mobx-react-lite';
 import { SellerMapStoreContext } from '../../store/SellerMapStore';
 import { mainStoreContext } from '../../store/MainStore';
 
-export const SellerMaps = observer(() => {
+export const SellerMaps = observer(({emitFunc}) => {
   const sellerMapStore = useContext(SellerMapStoreContext);
   const mainStore = useContext(mainStoreContext);
 
@@ -65,12 +65,11 @@ export const SellerMaps = observer(() => {
 
   const drawButton = () => {
       return (
-        <View style={{position: 'absolute', top: mainStore.scrollviewHeight - 50, left: mainStore.screenWidth / 2 - 40}}>
-          <Button
-            style={{height: 60, width: 200}}
-            title='위치 확정'
-            onPress={() => console.log("center : ", sellerMapStore.center)} // 위치선정을 끝냈을 때. sellerMapStore.center를 리턴하면 됨.
-          />
+        <View style={{position: 'absolute', bottom: 25, right: 10}}>
+          <TouchableOpacity onPress={() => {console.log("center : ", sellerMapStore.center); emitFunc()}} style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#4177c9', height: 50, zIndex: 3, borderRadius: 25, borderBottomColor: '#4177c9', borderBottomWidth: 3 }}>
+            <Text style={{ paddingBottom: 1, paddingLeft: 7, paddingRight: 10, color: '#ffffff', fontSize: 16, fontWeight: '700'}}>위치 확정하기</Text>
+          </TouchableOpacity> 
+          {/* // 위치선정을 끝냈을 때. sellerMapStore.center를 리턴하면 됨. */}
         </View>
       )
   }
