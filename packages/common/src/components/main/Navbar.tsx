@@ -11,7 +11,20 @@ interface Props extends RouteComponentProps {}
 
 export const Navbar: React.FC<Props> = observer(({ history }) => {
   const mainStore = useContext(mainStoreContext);
-  const searchResultStore = useContext(searchResultContext)
+
+  const checkAuth = () => {
+    const isSeller = localStorage.getItem('isSeller') === 'true' ? true : false
+    const cookies = JSON.parse(localStorage.getItem('cookies'))
+    if (cookies) {
+      const expires = Date.parse(cookies.expires)
+      console.log('expires: ', expires, 'now: ', Date.now())
+      if (expires > Date.now()) {
+        return [true, isSeller]
+      } else return [false, false]
+    } else return [false, false]
+  }
+
+  [mainStore.isLoggedIn, mainStore.isSeller] = checkAuth();
 
   const AuthButton = () => {
     if (mainStore.isLoggedIn === false) {
@@ -60,7 +73,7 @@ const localStyle = StyleSheet.create({
   footer: {
     position: 'absolute',
     height: 80,
-    paddingBottom: 30,
+    paddingBottom: 0,
     bottom: 0,
     right: 0,
     left: 0,
@@ -69,12 +82,14 @@ const localStyle = StyleSheet.create({
   },
   navButton: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
+    paddingTop: 5,
+    paddingBottom: 10
   },
   navButtonImage: {
-    tintColor: '#505050',
+    tintColor: '#303030',
     height: 35,
     width: 35,
     resizeMode: 'cover',
@@ -82,8 +97,8 @@ const localStyle = StyleSheet.create({
     marginBottom: -5
   },
   navButtonText: {
-    fontWeight: '700',
-    fontSize: 16,
+    fontWeight: '600',
+    fontSize: 14,
     color: '#505050'
   }
 });
