@@ -28,14 +28,14 @@ export const RouteMypage : React.FC<Props> = observer(({history}) => {
       }).catch((err)=> {
         console.log(err)
       })
-}
+    }
 
   return (
     <View>
        <TouchableOpacity onPress={()=>{handleLogout()}} style={[styles.buttons, { position: 'absolute', zIndex: 10, alignSelf:'flex-end', flex: 1, width: '20%'}]}>
-            <Text style={{ color: Colors.white }}>로그아웃</Text>
+          <Text style={{ color: Colors.white }}>로그아웃</Text>
        </TouchableOpacity>
-      {mainStore.isSeller === false ? <SellerMain /> : <Mypage />}
+      {mainStore.isSeller === true ? <SellerMain /> : <Mypage />}
     </View>
   )
 })
