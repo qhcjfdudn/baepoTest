@@ -95,11 +95,9 @@ export default () => {
 
   const EditButton = () => {
     return (
-      <TouchableOpacity activeOpacity={.5} onPress={()=>{console.log('clicked')}}>
-        <Image
-          style={{ width: 15, height: 15 }}
-          source={require('@foodtruckmap/common/src/static/icon_processed/edit_marker.png')} />
-      </TouchableOpacity>
+      <Image
+        style={{ width: 20, height: 20 }}
+        source={require('@foodtruckmap/common/src/static/icon_processed/edit_marker.png')} />
     )
   }
 
@@ -107,21 +105,50 @@ export default () => {
     return (
       <View>
         {isEditing[target]
-          ? <View>
+          ? <View style={{ paddingHorizontal: '10%'}}>
             <TextInput
-              style={[styles.input, LocalStyles.form]}
+              style={[CustomText.titleHN, CustomText.textCenter, { fontSize: 24, borderBottomWidth: 2, borderBottomColor: '#303030' }]}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               defaultValue={data[target]}
               onChangeText={text => onChangeText(target, text)}
             />
-            <Button title="완료" onPress={() => submit(target)}></Button>
-            <Button title="취소" onPress={() => cancel(target)}></Button>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <TouchableOpacity style={[styles.menuButton, { backgroundColor: '#4177c9', }]} onPress={() => submit(target)}><Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: '700' }}>등록</Text></TouchableOpacity>
+              <TouchableOpacity style={[styles.menuButton, { backgroundColor: '#798391', }]} onPress={() => cancel(target)}><Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: '700' }}>취소</Text></TouchableOpacity>
+            </View>
+          </View>
+          : <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[CustomText.titleHN, { fontSize: 24 }]}>{data.title}</Text>
+            <TouchableOpacity onPress={() => getdd(target)}><EditButton /></TouchableOpacity>
+          </View>
+        }
+      </View>
+    )
+  }
+
+  const editContentComponent = (target: string) => {
+    return (
+      <View>
+        {isEditing[target]
+          ? <View>
+            <TextInput
+              style={[CustomText.italic, CustomText.body, CustomText.textCenter, { fontSize: 16, borderBottomWidth: 2, borderBottomColor: '#303030', paddingVertical: 5 }]}
+              underlineColorAndroid="transparent"
+              autoCapitalize="none"
+              defaultValue={data[target]}
+              onChangeText={text => onChangeText(target, text)}
+            />
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <TouchableOpacity style={[styles.menuButton, { backgroundColor: '#4177c9', }]} onPress={() => submit(target)}><Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: '700' }}>등록</Text></TouchableOpacity>
+              <TouchableOpacity style={[styles.menuButton, { backgroundColor: '#798391', }]} onPress={() => cancel(target)}><Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: '700' }}>취소</Text></TouchableOpacity>
+            </View>
           </View>
           : <View>
-            <Text style={[CustomText.titleHN, { fontSize: 24 }]}>{data.title}</Text>
-            <EditButton onPress/>
-            <Button title="수정" onPress={() => getdd(target)}></Button>
+            <Text style={[CustomText.italic, CustomText.body, CustomText.textCenter, { fontSize: 16, paddingVertical: 5 }]}>{data.contents}</Text>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <TouchableOpacity style={[styles.menuButton, { backgroundColor: '#4177c9', }]} onPress={() => getdd(target)}><Text style={{ textAlign: 'center', color: '#FFFFFF', fontWeight: '700' }}>수정</Text></TouchableOpacity>
+            </View>
           </View>
         }
       </View>
@@ -165,14 +192,13 @@ export default () => {
     axios.put(`/menus/${menuId}`, requestDto)
       .then((res) => {
         const updatedMenu = res.data;
-        const newMenus = data.menus.map(menu => menu.id === updatedMenu.id ? updatedMenu : menu );
-        setData({...data, menus: newMenus})
+        const newMenus = data.menus.map(menu => menu.id === updatedMenu.id ? updatedMenu : menu);
+        setData({ ...data, menus: newMenus })
       })
   }
 
   return (
-    <View>
-
+    <View style={{ flex: 1 }}>
       <Image
         style={{ width: '100%', height: 150, marginBottom: -30 }}
         source={{ uri: data.imgURL ? data.imgURL : '' }}
@@ -180,21 +206,12 @@ export default () => {
       />
       <View style={{ paddingBottom: 10, backgroundColor: '#edaa11', width: '70%', alignSelf: 'center', borderRadius: 9, marginBottom: 5 }}>
         <View style={{ width: '100%', backgroundColor: '#f2be46', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 9, alignItems: 'center' }}>
-          {editTitleComponent(data.title)}
-          <Text style={[CustomText.titleHN, { fontSize: 24 }]}>{data.title}</Text>
+          {editTitleComponent('title')}
         </View>
       </View>
-      <Line></Line>
-      <View>
-        <Text style={LocalStyles.title}>푸드트럭 이름</Text>
-        {editComponent('title')}
-      </View>
 
-      <Line></Line>
-
-      <View>
-        <Text style={LocalStyles.title}>소개글</Text>
-        {editComponent('contents')}
+      <View style={{ paddingHorizontal: '5%' }}>
+        {editContentComponent('contents')}
       </View>
 
       <Line></Line>
@@ -202,7 +219,6 @@ export default () => {
       <MenuList menulist={data.menus} handleMenuSubmit={handleMenuSubmit}></MenuList>
 
       <SellerState></SellerState>
-      <Line></Line>
     </View>
   )
 }
@@ -226,6 +242,12 @@ const localStyle = StyleSheet.create({
   },
   truckContentsContainer: {
     paddingBottom: 10,
+  },
+  menuButton: {
+    flex: 1,
+    marginTop: 5,
+    paddingVertical: 3,
+    borderRadius: 6,
   },
 })
 
