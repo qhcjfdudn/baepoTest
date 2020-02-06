@@ -3,6 +3,7 @@ import {
     View,
     Text,
     FlatList ,
+    Button
  } from "react-native";
  import Menu from './Menu'
 
@@ -12,26 +13,35 @@ interface IMenu {
   price: number,
   content: string,
   imgURL: string,
+  isSoldOut: boolean,
 }
 
- interface IProps {
-  menulist: IMenu[]
+
+interface IProps {
+  menulist: IMenu[],
+  handleMenuSubmit: any
 }
 
 export default (props:IProps) => {
 
+  const handleMenuSubmit = (menuId, requestDto) => {
+    props.handleMenuSubmit(menuId, requestDto);
+  }
+
   return (
     <View>
-      <Text>---------메뉴---------</Text>
+    <Text>---------메뉴---------</Text>
       <FlatList<IMenu>
         data={props.menulist}
         renderItem={({ item } ) => 
         <Menu 
-          name={item.name} 
+          handleMenuSubmit={handleMenuSubmit}
+          name={item.name}
           price={item.price} 
           id={item.id}
           imgURL={item.imgURL}
           content={item.content}
+          isSoldOut={item.isSoldOut}
           />}
         
           keyExtractor={item => item.name}

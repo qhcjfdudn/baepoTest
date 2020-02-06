@@ -57,24 +57,21 @@ const LocalStyles = StyleSheet.create({
 export default () => {
   const [data, setData] = useState({ id: '', imgURL: '', title: '', contents: '', latitude: 0, longitude: 0, state: '', menus: [] });
   const [isEditing, setIsEditing] = useState({ id: false, imgURL: false, title: false, contents: false, latitude: false, longitude: false, state: false, menus: [] });
-  const [editText] = useState({ id: '', imgURL: '', title: '', contents: '', latitude: 0, longitude: 0, state: '', menus: [] })
+  const [editText, setEditText] = useState({ id: '', imgURL: '', title: '', contents: '', latitude: 0, longitude: 0, state: '', menus: [] })
 
   const mainStore = useContext(mainStoreContext)
 
   useEffect(() => {
-
-    axios.get(`${mainStore.proxy}/trucks/1`)
+    axios.get('/trucks/1')
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
-        console.log(data);
+        setEditText(res.data);
       })
   }, []);
 
   const editComponent = (target: string) => {
     return (
       <View>
-
         {isEditing[target]
           ? <View>
             <TextInput
@@ -136,9 +133,6 @@ export default () => {
   }
 
   const submit = (target: string) => {
-    console.log("data: " + data[target])
-    console.log("editText: " + editText[target])
-
     let requestDto = {
       title: data.title,
       contents: data.contents,
@@ -148,27 +142,32 @@ export default () => {
     };
 
     requestDto[target] = editText[target];
-    console.log(requestDto);
 
-    axios.put(`${mainStore.proxy}/trucks/update/1`, requestDto)
+    axios.put('/trucks/update/1', requestDto)
       .then((res) => {
-        console.log(res.data);
+        setData(res.data);
       })
     getdd(target);
   }
 
   const cancel = (target: string) => {
-    console.log("before editText : " + editText[target]);
     editText[target] = data[target];
-    console.log("after editText : " + editText[target]);
     getdd(target);
-    console.log(isEditing)
   }
 
   const getdd = (target: string) => {
     const result = { ...isEditing };
     result[target] = !result[target];
     setIsEditing(result);
+  }
+
+  const handleMenuSubmit = (menuId, requestDto) => {
+    axios.put(`/menus/${menuId}`, requestDto)
+      .then((res) => {
+        const updatedMenu = res.data;
+        const newMenus = data.menus.map(menu => menu.id === updatedMenu.id ? updatedMenu : menu );
+        setData({...data, menus: newMenus})
+      })
   }
 
   return (
@@ -200,7 +199,7 @@ export default () => {
 
       <Line></Line>
 
-      <MenuList menulist={data.menus}></MenuList>
+      <MenuList menulist={data.menus} handleMenuSubmit={handleMenuSubmit}></MenuList>
 
       <SellerState></SellerState>
       <Line></Line>
