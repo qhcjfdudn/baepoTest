@@ -15,20 +15,19 @@ interface Props extends RouteComponentProps {}
 export const RouteMypage : React.FC<Props> = observer(({history}) => {
   const mainStore = React.useContext(mainStoreContext)
   console.log(mainStore.isSeller)
-  
+  axios
   const handleLogout = () => {
-    axios({
-    url: mainStore.proxy + '/users/logout',
-  }).then((response)=>{
-    if (response.data === true) {
-      mainStore.isLoggedIn = false;
-      mainStore.isSeller = false;
-      localStorage.removeItem('cookies')
-      history.replace('/')
-    }
-  }).catch((err)=> {
-    console.log(err)
-  })
+    axios.get('/users/logout')
+      .then((response)=>{
+        if (response.data === true) {
+          mainStore.isLoggedIn = false;
+          mainStore.isSeller = false;
+          localStorage.removeItem('cookies')
+          history.replace('/')
+        }
+      }).catch((err)=> {
+        console.log(err)
+      })
 }
 
   return (

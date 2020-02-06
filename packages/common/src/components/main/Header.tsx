@@ -18,7 +18,7 @@ export const Header: React.FC = observer(() => {
 
   // test for dev
   const devTest = () => {
-    axios({ url: mainStore.proxy + '/', method: 'get' })
+    axios.get('/')
       .then((response) => { console.log(response); alert(JSON.stringify(response.data)) })
       .catch((error) => { console.log(error.response); alert(JSON.stringify(error.response.data)) })
   }

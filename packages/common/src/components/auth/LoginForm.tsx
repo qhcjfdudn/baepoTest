@@ -26,7 +26,7 @@ export const NewLoginForm: React.FC<Props> = observer(({history}) => {
   }
 
   const handleLogin = (email: string, pass: string) => {
-    axios.post(`${mainStore.proxy}/users/login`,{
+    axios.post('/users/login',{
         userEmail: loginStore.userEmail,
         userPassword: loginStore.pass
       })
