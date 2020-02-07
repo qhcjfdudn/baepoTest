@@ -8,6 +8,7 @@ import { Router, Switch, Route, Redirect } from './Router';
 import { Navbar } from './components/main/Navbar';
 import { RouteMypage } from './modules/RouteMypage';
 import { RouteTruck } from './modules/RouteTruck';
+import { Header } from './components/main/Header';
 
 interface Props {
   height: number;
@@ -33,6 +34,7 @@ export const Routes = (Props: Props) => {
             <Redirect path='*' to='/' />
           </Switch>
         </ScrollView>
+        <Route component={Header} />
         <Route component={Navbar} />
       </View>
     </Router>
