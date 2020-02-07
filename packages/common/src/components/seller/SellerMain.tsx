@@ -12,6 +12,7 @@ import {
 import MenuList from './MenuList';
 import Line from '../Line'
 import axios from 'axios'
+
 import SellerState from './SellerState'
 
 import { mainStoreContext } from '../../store/MainStore';
@@ -172,7 +173,7 @@ export default () => {
 
     axios.put('/trucks/update/1', requestDto)
       .then((res) => {
-        setData(res.data);
+        setData({...data, ...res.data});
       })
     getdd(target);
   }
