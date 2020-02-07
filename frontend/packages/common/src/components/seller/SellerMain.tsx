@@ -61,8 +61,10 @@ export default () => {
 
   const mainStore = useContext(mainStoreContext)
 
+  const myTruckId = localStorage.getItem('truckId')
+
   useEffect(() => {
-    axios.get(`/trucks/${mainStore.sellerTruckId === undefined ? '1' : mainStore.sellerTruckId}`)
+    axios.get(`/trucks/${myTruckId === undefined ? '1' : myTruckId}`)
       .then((res) => {
         setData(res.data.result);
         setEditText(res.data.result);
