@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
 import axios from 'axios';
 import { observer } from "mobx-react-lite";
@@ -15,17 +15,31 @@ interface Props {
 export const NewLoginForm: React.FC<Props> = observer(({ history }) => {
   const mainStore = useContext(mainStoreContext);
   const loginStore = useContext(loginStoreContext);
+  let [canSubmit, setCanSubmit] = useState(false);
 
   const handleEmail = (email: string) => {
     loginStore.userEmail = email;
+    const reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[a-zA-Z_-]{2,}){1,2}$/;
+
+    setCanSubmit(
+      loginStore.userEmail != '' && 
+      loginStore.pass != '' &&
+      reg_email.test(loginStore.userEmail)
+      )
   };
 
   // security handling required.
   const handlePassword = (pass: string) => {
     loginStore.pass = pass;
+    setCanSubmit(loginStore.userEmail != '' && loginStore.pass != '')
   }
 
   const handleLogin = (email: string, pass: string) => {
+    if (!canSubmit) {
+      return;
+    }
+    
+    canSubmit = false;
     axios.post('/users/login',{
         userEmail: loginStore.userEmail,
         userPassword: loginStore.pass
@@ -52,6 +66,7 @@ export const NewLoginForm: React.FC<Props> = observer(({ history }) => {
         }
       })
       .catch((error) => {
+        canSubmit = true;
         alert(error.response.data.message)
       });
   }
@@ -90,12 +105,22 @@ export const NewLoginForm: React.FC<Props> = observer(({ history }) => {
           />
         </View>
         <View style={[styles.inputContainer, { paddingTop: 15, paddingBottom: 5 }]}>
-          <TouchableOpacity
+        {canSubmit
+        ?
+        <TouchableOpacity
             style={[styles.buttons, LocalStyles.form]}
             onPress={() => handleLogin(loginStore.userEmail, loginStore.pass)}
-          >
-            <Text style={{ color: Colors.white, fontSize:16, fontWeight: '700' }}>로그인</Text>
-          </TouchableOpacity>
+        >
+          <Text style={{ color: Colors.white, fontSize:16, fontWeight: '700' }}>로그인</Text>
+        </TouchableOpacity>
+        :
+        <TouchableOpacity
+          style={[styles.disableButtons, LocalStyles.form]}
+          onPress={() => handleLogin(loginStore.userEmail, loginStore.pass)}
+        >
+          <Text style={{ color: Colors.white, fontSize:16, fontWeight: '700' }}>로그인</Text>
+        </TouchableOpacity>
+        }
         </View>
       </View>
     </View>
