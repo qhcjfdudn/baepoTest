@@ -26,10 +26,17 @@ export const Header: React.FC<Props> = observer(({ history }) => {
       .catch((error) => { console.log(error.response); alert(JSON.stringify(error.response.data)) })
   }
 
+  const sellerButton = () => {
+    return mainStore.isSeller ? 
+      <TouchableOpacity style={{position: 'absolute', right: 10}} onPress={()=>history.push('/seller')}><View style={{ paddingVertical: 7, paddingHorizontal: 4, backgroundColor: Colors.success, borderRadius: 3 }}><Text style={{ color: Colors.white, fontSize: 12 }}>내트럭</Text></View></TouchableOpacity>
+      : <></>
+  }
+
 return (
   <View style={[styles.header, { height: mainStore.headerHeight }]}>
     <Text style={styles.headerText} onPress={()=>history.replace('/')}>foodtruck 🚚 </Text>
     <TouchableOpacity style={{alignSelf: 'center'}} onPress={devTest}><View style={{ paddingVertical: 1, paddingHorizontal: 4, backgroundColor: Colors.deepcoral, borderRadius: 3 }}><Text style={{ color: Colors.white, fontSize: 12 }}>DEV</Text></View></TouchableOpacity>
+    {sellerButton()}
   </View>
 )
 })
