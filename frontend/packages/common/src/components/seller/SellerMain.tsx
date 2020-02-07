@@ -63,10 +63,10 @@ export default () => {
   const mainStore = useContext(mainStoreContext)
 
   useEffect(() => {
-    axios.get('/trucks/1')
+    axios.get(`/trucks/${mainStore.sellerTruckId === undefined ? '1' : mainStore.sellerTruckId}`)
       .then((res) => {
-        setData(res.data);
-        setEditText(res.data);
+        setData(res.data.result);
+        setEditText(res.data.result);
       })
   }, []);
 
@@ -173,7 +173,7 @@ export default () => {
 
     axios.put('/trucks/update/1', requestDto)
       .then((res) => {
-        setData({...data, ...res.data});
+        setData({ ...data , ...res.data });
       })
     getdd(target);
   }
