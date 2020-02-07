@@ -23,7 +23,7 @@ interface Props {
 }
 
 interface TruckProps {
-  title: String,
+  title: string,
   imgURL?: string,
   state: String,
   id: number,
@@ -47,14 +47,14 @@ export const MyPageTrucks : React.FC<Props> = ({myInfo}) => {
       axios.get('/sellers/myTrucks')
       .then((response)=>{
         console.log('myTrucks: ', response, 'myInfo', myInfo)
-        setData({myTruck: response.data, following: []})
+        setData({myTruck: response.data.map(item=>{return {...item.truck, id: item.id}}), following: []})
       })   
      } else {
        axios.get('/follows/followList')
       .then(
         (response)=>{
           console.log('following', response)
-          setData({myTruck: [], following: response.data})
+          setData({myTruck: [], following: response.data.map(item=>{return {...item.truck, id: item.id}})})
         }
       )}
   },[])
@@ -69,6 +69,7 @@ export const MyPageTrucks : React.FC<Props> = ({myInfo}) => {
         renderItem={({item}) =>
           <MyPageTruckItem truck={item} />
         }
+        keyExtractor={item=>item.title}
       />
       }
     </View>
@@ -85,6 +86,7 @@ export const MyPageTrucks : React.FC<Props> = ({myInfo}) => {
         renderItem={({item}) =>
           <MyPageTruckItem truck={item} />
         }
+        keyExtractor={item=>item.id.toString()}
       />
   }
     </View>
@@ -92,7 +94,8 @@ export const MyPageTrucks : React.FC<Props> = ({myInfo}) => {
 
   return (
   <View style={styles.myinfoContainer}>
-    {myInfo.isSeller ? sellerTruck() : customerTruck()}
+    {myInfo.isSeller ? sellerTruck() : <></>}
+    {customerTruck()}
   </View>
 )
 }

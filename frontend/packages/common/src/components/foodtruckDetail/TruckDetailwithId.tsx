@@ -119,7 +119,7 @@ export const TruckDetailwithId: React.FC<Props> = ({ targetId }) => {
       );
       console.log("result: ", JSON.stringify(result.data.result))
       setData(result.data.result)
-      setFollow(result.data.isFollow)
+      setFollow({isFollow: result.data.isFollow})
     };
     const fetchReview = async () => {
       const result = await axios(`/reviews/all/${targetId}`,
@@ -139,7 +139,7 @@ export const TruckDetailwithId: React.FC<Props> = ({ targetId }) => {
         defaultSource={{ uri: `https://picsum.photos/id/${data.id ? data.id : 0}/200` }}
       />
       <TouchableOpacity
-        style={{ position: 'absolute', right: 10, top: 50, alignSelf: 'center', paddingTop: 8, paddingBottom: 8, marginBottom: 5, height: 30, width: 30, borderRadius: 15, borderColor: '#FFFFFF', borderWidth: 1.2, alignItems: 'center', justifyContent: 'center', backgroundColor: follow.isFollow === true ? '#ec585c': '#ffffff' }}
+        style={{ position: 'absolute', right: 10, top: 50, alignSelf: 'center', paddingTop: 8, paddingBottom: 8, marginBottom: 5, height: 30, width: 30, borderRadius: 15, borderColor: '#FFFFFF', borderWidth: 1.2, alignItems: 'center', justifyContent: 'center', backgroundColor: follow.isFollow === true ? '#ec585c': '#c0c0c0' }}
         onPress={() => clickedFollowButton()} >
         <Image
         style={{ tintColor: '#ffffff', width: 21, height: 21 }}
