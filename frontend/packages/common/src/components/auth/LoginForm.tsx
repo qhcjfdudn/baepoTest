@@ -48,15 +48,11 @@ export const NewLoginForm: React.FC<Props> = observer(({ history }) => {
             mainStore.sellerTruckId = response.data.truckId;
           }
 
-          alert(response.statusText)
-
           history.push('/')
         }
       })
       .catch((error) => {
-        console.log(error.response);
-        console.log(error.response.data.message)
-        alert(error.response.statusText)
+        alert(error.response.data.message)
       });
   }
 
