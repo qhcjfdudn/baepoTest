@@ -172,7 +172,7 @@ export default () => {
 
     axios.put('/trucks/update/1', requestDto)
       .then((res) => {
-        setData(res.data);
+        setData({ ...data , ...res.data });
       })
     getdd(target);
   }
