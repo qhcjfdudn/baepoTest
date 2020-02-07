@@ -64,8 +64,8 @@ export default () => {
   useEffect(() => {
     axios.get('/trucks/1')
       .then((res) => {
-        setData(res.data);
-        setEditText(res.data);
+        setData(res.data.result);
+        setEditText(res.data.result);
       })
   }, []);
 
