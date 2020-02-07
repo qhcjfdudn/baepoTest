@@ -67,6 +67,13 @@ export const CustomStyle = StyleSheet.create({
     justifyContent: 'center', 
     backgroundColor: Colors.gray
   },
+  mediumButton: {
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    flexDirection: 'row',
+  },
   highlight: {
     fontWeight: '700',
   }
