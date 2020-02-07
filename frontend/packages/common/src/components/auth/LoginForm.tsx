@@ -107,6 +107,7 @@ export const NewLoginForm: React.FC<Props> = observer(({ history }) => {
             placeholder="Password"
             placeholderTextColor="#9a73ef"
             autoCapitalize="none"
+            secureTextEntry={true}
             onChangeText={handlePassword}
           />
         </View>
